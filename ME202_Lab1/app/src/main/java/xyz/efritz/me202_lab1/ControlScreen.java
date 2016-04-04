@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,11 +36,7 @@ public class ControlScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
 
-//        Context context = getApplicationContext();
-//        int duration = Toast.LENGTH_SHORT;
-//        Toast.makeText(context, "shitbox", duration).show();
         Switch mode, state;
-
 
         mode = (Switch) findViewById(R.id.lightMode);
         state = (Switch) findViewById(R.id.lightState);
@@ -50,29 +47,28 @@ public class ControlScreen extends AppCompatActivity {
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView modeswitch = (TextView) findViewById(R.id.mode_text);
+                TextView mode_switch = (TextView) findViewById(R.id.mode_text);
                 if (isChecked) {
 //                    Toast.makeText(getApplicationContext(), "mode switch on", Toast.LENGTH_SHORT).show();
-                    modeswitch.setText("Auto");
+                    mode_switch.setText("Auto");
                 } else {
 //                    Toast.makeText(getApplicationContext(), "mode switch off", Toast.LENGTH_SHORT).show();
-                    modeswitch.setText("On");
+                    mode_switch.setText("On");
                 }
             }
         });
-        
-//
+
 
         state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView stateswitch = (TextView) findViewById(R.id.state_text);
+                TextView state_switch = (TextView) findViewById(R.id.state_text);
                 if (isChecked) {
 //                    Toast.makeText(getApplicationContext(), "state switch on", Toast.LENGTH_SHORT).show();
-                    stateswitch.setText("Solid");
+                    state_switch.setText("Solid");
                 } else {
 //                    Toast.makeText(getApplicationContext(), "state switch off", Toast.LENGTH_SHORT).show();
-                    stateswitch.setText("Blinking");
+                    state_switch.setText("Blinking");
                 }
             }
         });
@@ -81,29 +77,34 @@ public class ControlScreen extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
     }
 
     public void unlock(View view) {
         //open display
-//        Context context = getApplicationContext();
-//        Toast.makeText(getApplicationContext(), "fuck off", Toast.LENGTH_SHORT).show();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText bikeID = new EditText(getApplicationContext());
+        bikeID.setTextColor(ContextCompat.getColor(this, R.color.black));
+        bikeID.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
+        //Use this if version < 23 (maybe add an if statement later?)
+//        bikeID.setTextColor(this.getResources().getColor(R.color.black));
+//        bikeID.setHintTextColor(this.getResources().getColor(R.color.grey));
+
+        bikeID.setHint("Bike Address");
         builder.setMessage("Enter Bike to unlock:");
         builder.setTitle("Unlock?");
         builder.setView(bikeID);
         builder.setPositiveButton("accept", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), bikeID.getText().toString(),Toast.LENGTH_LONG);
+//                Toast.makeText(getApplicationContext(),Integer.toString(which),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Entered: " + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
             }
         });
         builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //fuck
+//                Toast.makeText(getApplicationContext(), Integer.toString(which), Toast.LENGTH_SHORT).show();
+                dialog.cancel();
             }
         });
         AlertDialog dialog = builder.create();
@@ -112,7 +113,8 @@ public class ControlScreen extends AppCompatActivity {
     }
 
     public void rider_history(View view) {
-        Toast.makeText(getApplicationContext(), "no history yet", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "no records yet...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Fatass", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -154,8 +156,5 @@ public class ControlScreen extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
-
-    //check the light mode switch
-
 
 }
