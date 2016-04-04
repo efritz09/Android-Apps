@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ME202_ass1</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="logon">Log On</string>
+    <string name="title_activity_display_message">My Message</string>
+</resources>
