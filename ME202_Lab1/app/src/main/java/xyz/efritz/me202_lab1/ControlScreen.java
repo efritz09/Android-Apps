@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -59,12 +60,7 @@ public class ControlScreen extends AppCompatActivity {
                 }
             }
         });
-
-//        if(mode.isChecked()) {
-//            Toast.makeText(context, "mode switch on", duration).show();
-//        } else {
-//            Toast.makeText(context, "mode switch off", duration).show();
-//        }
+        
 //
 
         state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -80,81 +76,39 @@ public class ControlScreen extends AppCompatActivity {
                 }
             }
         });
-//        if(state.isChecked()) {
-//            Toast.makeText(context, "mode switch on", duration).show();
-//        } else {
-//            Toast.makeText(context, "mode switch off", duration).show();
-//        }
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-//
-//        Button more = (Button)findViewById(R.id.lock_button);
-//        more.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-//                alertDialog.setTitle("hi");
-//                alertDialog.setMessage("test");
-//                alertDialog.setButton("Contineu...", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //
-//                    }
-//                });
-//                alertDialog.show();
-//            }
-//        });
+
     }
 
     public void unlock(View view) {
         //open display
 //        Context context = getApplicationContext();
-        Toast.makeText(getApplicationContext(), "fuck off", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "fuck off", Toast.LENGTH_SHORT).show();
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("hello");
-//        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                //fuck
-//            }
-//        });
-//        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                //fuck
-//            }
-//        });
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText bikeID = new EditText(getApplicationContext());
+        builder.setMessage("Enter Bike to unlock:");
+        builder.setTitle("Unlock?");
+        builder.setView(bikeID);
+        builder.setPositiveButton("accept", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), bikeID.getText().toString(),Toast.LENGTH_LONG);
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //fuck
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
-
-//                AlertDialog.Builder unlock_alert = new AlertDialog.Builder(getApplicationContext());
-//        unlock_alert.setMessage("Unlock bike?");
-//        unlock_alert.setCancelable(true);
-
-//        unlock_alert.setPositiveButton(
-//                "unlock",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                }
-//        );
-//
-//        unlock_alert.setNegativeButton(
-//                "cancel",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                }
-//        );
-//        AlertDialog alert = unlock_alert.create();
-//        alert.show();
     }
 
     public void rider_history(View view) {
