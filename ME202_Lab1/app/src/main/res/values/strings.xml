@@ -6,7 +6,7 @@
     <string name="state_of_connection">Connected</string>
     <string name="unlock_status">unlock</string>
     <string name="unique_ID">10:C3:7B:93:40:BC</string>
-    <string name="light_mode">Mode\t</string>
-    <string name="light_state">State\t</string>
+    <string name="light_mode">Mode\t\t</string>
+    <string name="light_state">State\t\t</string>
     <string name="riding_history">History</string>
 </resources>
