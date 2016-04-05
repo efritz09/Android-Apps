@@ -98,6 +98,14 @@ public class ControlScreen extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 //                Toast.makeText(getApplicationContext(),Integer.toString(which),Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), "Entered: " + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
+                TextView connect = (TextView)findViewById(R.id.state_of_connection);
+                connect.setText("Connected: ");
+                connect = (TextView)findViewById(R.id.unique_identifier);
+                connect.setText(bikeID.getText().toString());
+                connect = (TextView)findViewById(R.id.lock_status);
+                connect.setText("Unlocked");
+                connect.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+
             }
         });
         builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
