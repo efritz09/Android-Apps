@@ -45,30 +45,28 @@ public class ControlScreen extends AppCompatActivity {
         state.setChecked(true);
 
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            TextView mode_switch = (TextView) findViewById(R.id.mode_text);
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView mode_switch = (TextView) findViewById(R.id.mode_text);
                 if (isChecked) {
-//                    Toast.makeText(getApplicationContext(), "mode switch on", Toast.LENGTH_SHORT).show();
-                    mode_switch.setText("Auto");
+                    mode_switch.setText(getString(R.string.modeAuto));
                 } else {
-//                    Toast.makeText(getApplicationContext(), "mode switch off", Toast.LENGTH_SHORT).show();
-                    mode_switch.setText("On");
+                    mode_switch.setText(getString(R.string.modeOn));
                 }
             }
         });
 
 
         state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            TextView state_switch = (TextView) findViewById(R.id.state_text);
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView state_switch = (TextView) findViewById(R.id.state_text);
                 if (isChecked) {
-//                    Toast.makeText(getApplicationContext(), "state switch on", Toast.LENGTH_SHORT).show();
-                    state_switch.setText("Solid");
+                    state_switch.setText(getString(R.string.stateSolid));
                 } else {
-//                    Toast.makeText(getApplicationContext(), "state switch off", Toast.LENGTH_SHORT).show();
-                    state_switch.setText("Blinking");
+                    state_switch.setText(getString(R.string.stateBlinking));
                 }
             }
         });
@@ -89,29 +87,32 @@ public class ControlScreen extends AppCompatActivity {
 //        bikeID.setTextColor(this.getResources().getColor(R.color.black));
 //        bikeID.setHintTextColor(this.getResources().getColor(R.color.grey));
 
-        bikeID.setHint("Bike Address");
-        builder.setMessage("Enter Bike to unlock:");
-        builder.setTitle("Unlock?");
+        bikeID.setHint(getString(R.string.bikeaddr));
+        builder.setMessage(getString(R.string.unlockmsg));
+        builder.setTitle(getString(R.string.unlockquestion));
         builder.setView(bikeID);
-        builder.setPositiveButton("accept", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+            Context cont = getApplicationContext();
+            TextView connect = (TextView) findViewById(R.id.state_of_connection);
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(getApplicationContext(),Integer.toString(which),Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "Entered: " + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
-                TextView connect = (TextView)findViewById(R.id.state_of_connection);
-                connect.setText("Connected: ");
-                connect = (TextView)findViewById(R.id.unique_identifier);
-                connect.setText(bikeID.getText().toString());
-                connect = (TextView)findViewById(R.id.lock_status);
-                connect.setText("Unlocked");
-                connect.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                if(bikeID.getText().toString().equals("")) {
+                    Toast.makeText(cont,getString(R.string.empty),Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(cont, getString(R.string.entered) + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
+                    connect.setText(getString(R.string.connected)); //getString(R.string.name)
+                    connect = (TextView) findViewById(R.id.unique_identifier);
+                    connect.setText(bikeID.getText().toString());
+                    connect = (TextView) findViewById(R.id.lock_status);
+                    connect.setText(getString(R.string.unlocked));
+                    connect.setTextColor(ContextCompat.getColor(cont, R.color.red));
+                }
 
             }
         });
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(getApplicationContext(), Integer.toString(which), Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
@@ -121,8 +122,8 @@ public class ControlScreen extends AppCompatActivity {
     }
 
     public void rider_history(View view) {
-        Toast.makeText(getApplicationContext(), "no records yet...", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), "Fatass", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.norecords), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.fatass), Toast.LENGTH_SHORT).show();
     }
 
     @Override

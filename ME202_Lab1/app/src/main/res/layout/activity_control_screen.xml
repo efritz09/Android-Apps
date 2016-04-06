@@ -39,8 +39,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
         android:id="@+id/unique_identifier"
-        android:layout_alignTop="@+id/state_of_connection"
-        android:layout_toEndOf="@+id/state_of_connection" />
+        android:layout_alignTop="@id/state_of_connection"
+        android:layout_toEndOf="@id/state_of_connection" />
 
     <!--android:text="@string/light_mode"-->
     <Switch
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/lightMode"
         android:layout_marginTop="54dp"
-        android:layout_below="@+id/unique_identifier"
+        android:layout_below="@id/unique_identifier"
         android:layout_toEndOf="@+id/mode_title"
         android:layout_marginStart="6dp" />
 
@@ -57,17 +57,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lightState"
-        android:layout_below="@+id/lightMode"
-        android:layout_alignEnd="@+id/lightMode" />
+        android:layout_alignTop="@+id/state_title"
+        android:layout_alignStart="@id/lightMode" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/riding_history"
         android:id="@+id/riding_history"
-        android:layout_below="@+id/lightState"
+        android:layout_below="@id/lightState"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:onClick="rider_history" />
 
     <TextView
@@ -76,7 +76,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Auto"
         android:id="@+id/mode_text"
-        android:layout_above="@+id/lightState"
+        android:layout_alignTop="@id/lightMode"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -85,7 +85,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Solid"
         android:id="@+id/state_text"
-        android:layout_alignBottom="@+id/lightState"
+        android:layout_alignBottom="@id/lightState"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -94,7 +94,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/light_mode"
         android:id="@+id/mode_title"
-        android:layout_above="@+id/lightState"
+        android:layout_alignTop="@id/lightMode"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -102,8 +102,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/light_state"
-        android:id="@+id/state_title"
-        android:layout_below="@+id/lightMode"
+        android:id="@id/state_title"
+        android:layout_below="@id/lightMode"
+        android:layout_marginTop="10dp"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -112,7 +113,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/status"
         android:id="@+id/lock_status_label"
-        android:layout_below="@+id/state_of_connection"
+        android:layout_below="@id/state_of_connection"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -121,7 +122,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Locked"
         android:id="@+id/lock_status"
-        android:layout_alignTop="@+id/lock_status_label"
-        android:layout_toEndOf="@+id/lock_status_label" />
+        android:layout_alignTop="@id/lock_status_label"
+        android:layout_toEndOf="@id/lock_status_label" />
 
 </RelativeLayout>
