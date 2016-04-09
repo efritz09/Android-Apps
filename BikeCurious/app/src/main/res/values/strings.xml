@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">ME202_Lab1</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Log In</string>
+    <string name="state_of_connection">Disconnected\t</string>
+    <string name="unlock_status">unlock</string>
+    <string name="sample_unique_ID">10:C3:7B:93:40:BC</string>
+    <string name="light_mode">Mode\t\t</string>
+    <string name="light_state">State\t\t</string>
+    <string name="riding_history">History</string>
+    <string name="status">Status:\t</string>
+    <string name="modeAuto">Auto</string>
+    <string name="modeOn">On</string>
+    <string name="stateSolid">Solid</string>
+    <string name="stateBlinking">Blinking</string>
+    <string name="bikeaddr">Bike Address</string>
+    <string name="unlockmsg">Enter Bike to unlock:</string>
+    <string name="unlockquestion">Unlock?</string>
+    <string name="accept">accept</string>
+    <string name="entered">Entered: </string>
+    <string name="connected">Connected:	</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="cancel">cancel</string>
+    <string name="norecords">no records yet...</string>
+    <string name="fatass">Fatass</string>
+    <string name="failedlogin">Login Failed</string>
+    <string name="empty">No Address Entered</string>
+</resources>

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="xyz.efritz.me202_lab1.MainActivity">
+    tools:context="xyz.efritz.bikecurious.Login">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +16,9 @@
         android:text="Enter Username and Password to continue"
         android:id="@+id/textView"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -27,7 +29,9 @@
         android:layout_below="@id/textView"
         android:layout_marginTop="50dp"
         android:layout_alignEnd="@+id/password_text"
-        android:layout_alignStart="@id/password_text" />
+        android:layout_alignRight="@id/password_text"
+        android:layout_alignStart="@id/password_text"
+        android:layout_alignLeft="@id/password_text"/>
 
     <EditText
         android:layout_width="wrap_content"
