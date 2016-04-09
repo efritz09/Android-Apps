@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -100,8 +101,11 @@ public class ControlScreen extends Activity {
     }
 
     public void rider_history(View view) {
-        Toast.makeText(getApplicationContext(), getString(R.string.norecords), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), getString(R.string.fatass), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), getString(R.string.norecords), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), getString(R.string.fatass), Toast.LENGTH_SHORT).show();
+        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistory.class);
+        startActivity(Start_History);
+        finish();
     }
 
 }

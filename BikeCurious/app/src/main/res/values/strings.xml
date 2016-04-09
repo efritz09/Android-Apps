@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ME202_Lab1</string>
+    <string name="app_name">Bike Curious</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_button">Log In</string>
@@ -26,4 +26,5 @@
     <string name="fatass">Fatass</string>
     <string name="failedlogin">Login Failed</string>
     <string name="empty">No Address Entered</string>
+    <string name="login_screen_text">Everyone get\'s a little Bike Curious every now and then</string>
 </resources>
