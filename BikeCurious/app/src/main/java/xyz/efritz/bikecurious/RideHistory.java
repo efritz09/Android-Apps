@@ -25,18 +25,12 @@ public class RideHistory extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_history);
 
-        ListView listView;
-        ArrayAdapter arrayAdapter;
-        listView = (ListView)findViewById(R.id.listView_history);
-        arrayAdapter = new ArrayAdapter(this,R.layout.history_user,R.id.user_text1,rides);
-        listView.setAdapter(arrayAdapter);
 
-//        ImageView image = (ImageView)findViewById(R.id.history_background_image);
-//        Picasso.with(this)
-//                .load(R.drawable.img_history_background)
-//                .fit()
-//                .centerCrop()
-//                .into(image);
+        ListView listView;
+        BikeHistoryAdapter arrayAdapter;
+        listView = (ListView)findViewById(R.id.listView_history);
+        arrayAdapter = new BikeHistoryAdapter(this,R.layout.history_user,rides);
+        listView.setAdapter(arrayAdapter);
 
         //use this to get click shit
 //        public void onItemClickListener(AdapterView<> parent, View v, int position, long id) {
@@ -51,8 +45,5 @@ public class RideHistory extends Activity {
         else {
             rides.add(new_ride.getText().toString());
         }
-
-
-
     }
 }
