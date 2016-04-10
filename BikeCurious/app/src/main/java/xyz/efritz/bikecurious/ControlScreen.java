@@ -105,7 +105,6 @@ public class ControlScreen extends Activity {
 //        Toast.makeText(getApplicationContext(), getString(R.string.fatass), Toast.LENGTH_SHORT).show();
         Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistory.class);
         startActivity(Start_History);
-        finish();
     }
 
 }
