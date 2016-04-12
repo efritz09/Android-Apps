@@ -50,19 +50,22 @@ public class RideHistory extends Activity {
         Context context = getApplicationContext();
 
         EditText new_ride = (EditText)findViewById(R.id.editText_add_ride);
-        if(new_ride.getText().toString().equals("")) Toast.makeText(context, R.string.add_ride_empty_toast,Toast.LENGTH_SHORT).show();
+        BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
+        if(new_ride.getText().toString().equals("")) {
+            Toast.makeText(context, R.string.add_ride_empty_toast,Toast.LENGTH_SHORT).show();
+            ride.location = getString(R.string.new_ride_empty_location);
+        }
         else {
-            BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
             ride.location = new_ride.getText().toString();
-            ride.date = DateFormat.getDateTimeInstance().format(new Date());
-            int randomNumber = random.nextInt(smash_max);
+        }
+        ride.date = DateFormat.getDateTimeInstance().format(new Date());
+        int randomNumber = random.nextInt(smash_max);
 
-            ride.imageID = smash[randomNumber];
-            ride_history.add(0,ride); //with zero, it adds the new one to the top, making it more like a stack
+        ride.imageID = smash[randomNumber];
+        ride_history.add(0, ride); //with zero, it adds the new one to the top, making it more like a stack
 //            rides.add(new_ride.getText().toString());
 //            times.add(DateFormat.getDateTimeInstance().format(new Date()));
-            arrayAdapter.notifyDataSetChanged();
-        }
+        arrayAdapter.notifyDataSetChanged();
     }
 }
 

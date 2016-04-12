@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Bike Curious</string>
-    <string name="login_username">Username</string>
-    <string name="login_password">Password</string>
-    <string name="login_button">Log In</string>
+    <string name="hint_login_username"><i>Username</i></string>
+    <string name="hint_login_password"><i>Password</i></string>
+    <string name="login_button">Satisfy my Curiosity</string>
     <string name="state_of_connection">Disconnected\t</string>
     <string name="unlock_status">unlock</string>
     <string name="sample_unique_ID">10:C3:7B:93:40:BC</string>
@@ -14,7 +14,7 @@
     <string name="modeOn">On</string>
     <string name="stateSolid">Solid</string>
     <string name="stateBlinking">Blinking</string>
-    <string name="bikeaddr">Bike Address</string>
+    <string name="hint_bikeaddr"><i>Bike Address</i></string>
     <string name="unlockmsg">Enter Bike to unlock:</string>
     <string name="unlockquestion">Unlock?</string>
     <string name="accept">accept</string>
@@ -27,8 +27,9 @@
     <string name="failedlogin">Login Failed</string>
     <string name="empty">No Address Entered</string>
     <string name="login_screen_text">Everyone get\'s a little Bike Curious every now and then</string>
-    <string name="add_ride_empty_toast">Please enter ride name</string>
-    <string name="hint_ride_name">new ride</string>
+    <string name="add_ride_empty_toast">Consider entering a unique name</string>
+    <string name="hint_ride_name"><i>new ride</i></string>
     <string name="button_add_ride">Add Ride</string>
     <string name="textView_no_rides">No Rides Logged</string>
+    <string name="new_ride_empty_location">New Ride</string>
 </resources>

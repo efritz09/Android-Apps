@@ -66,7 +66,7 @@ public class ControlScreen extends Activity {
 //        bikeID.setTextColor(this.getResources().getColor(R.color.black));
 //        bikeID.setHintTextColor(this.getResources().getColor(R.color.grey));
 
-        bikeID.setHint(getString(R.string.bikeaddr));
+        bikeID.setHint(getString(R.string.hint_bikeaddr));
         builder.setMessage(getString(R.string.unlockmsg));
         builder.setTitle(getString(R.string.unlockquestion));
         builder.setView(bikeID);
