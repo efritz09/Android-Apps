@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * Created by Eric on 4/9/2016.
+ * Yeah, totally created by me
  */
 public class BikeHistoryAdapter extends ArrayAdapter {
     Context context;
@@ -27,7 +28,7 @@ public class BikeHistoryAdapter extends ArrayAdapter {
 
 
     public BikeHistoryAdapter(Context context, int layoutResourceID, ArrayList<Ride> data) {
-        super(context, layoutResourceID, data);
+        super(context, layoutResourceID, data); //no idea what super does
         this.layoutResourceId = layoutResourceID;
         this.context = context;
         this.data = data;
@@ -58,12 +59,12 @@ public class BikeHistoryAdapter extends ArrayAdapter {
 //        holder.textView2.setText(date.get(position));
 //        String date_string = date.get(position);
         holder.textView2.setText(thisRide.date);
-        Picasso.with(context).load(R.mipmap.charizard).into(holder.icon);
+        Picasso.with(context).load(thisRide.imageID).into(holder.icon);
 
         return row;
     }
 
-
+//    This was in the example. I think it's just a struct to hold all the shit
     static class ViewHolder {
         TextView textView1;
         TextView textView2;
@@ -74,7 +75,7 @@ public class BikeHistoryAdapter extends ArrayAdapter {
     static class Ride {
         String location;
         String date;
-        int imageID;
+        int imageID; //no idea why adriano wanted this to be an int
     }
 
 }

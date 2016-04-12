@@ -15,11 +15,18 @@ import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class RideHistory extends Activity {
 //    It's in this form because Ride is in BikeHistoryAdapter.java
     static ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
 //    ArrayList<String> times = new ArrayList<String>();
+    int[] smash = {R.mipmap.dk,R.mipmap.falcon,R.mipmap.fox,R.mipmap.jiggly,R.mipmap.kirby,
+                    R.mipmap.link,R.mipmap.luigi,R.mipmap.mario,R.mipmap.ness,R.mipmap.pikachu,
+                    R.mipmap.samus,R.mipmap.yoshi};
+    final int smash_max = 12;
+    Random random = new Random();
+
     BikeHistoryAdapter arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,9 @@ public class RideHistory extends Activity {
             BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
             ride.location = new_ride.getText().toString();
             ride.date = DateFormat.getDateTimeInstance().format(new Date());
-            ride.imageID = 0;
+            int randomNumber = random.nextInt(smash_max);
+
+            ride.imageID = smash[randomNumber];
             ride_history.add(ride);
 //            rides.add(new_ride.getText().toString());
 //            times.add(DateFormat.getDateTimeInstance().format(new Date()));
