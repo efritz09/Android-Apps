@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/dark"
     tools:context="xyz.efritz.bikecurious.RideHistory">
 
 
@@ -15,8 +16,8 @@
         android:id="@+id/listView_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green"
         android:layout_weight="1"
+        android:background="@color/lessdark"
         android:layout_marginTop="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="75dp" />
@@ -56,9 +57,13 @@
 
     <EditText
         android:id="@+id/editText_add_ride"
+        android:singleLine="true"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:textColor="@color/grey"
+        android:textColorHint="@color/green"
         android:hint="@string/hint_ride_name"/>
 
 

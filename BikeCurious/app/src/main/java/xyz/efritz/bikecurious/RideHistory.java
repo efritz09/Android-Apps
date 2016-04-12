@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -17,17 +18,17 @@ import java.util.Date;
 
 public class RideHistory extends Activity {
 //    It's in this form because Ride is in BikeHistoryAdapter.java
-    ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
+    static ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
 //    ArrayList<String> times = new ArrayList<String>();
     BikeHistoryAdapter arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_history);
 
 
-        ListView listView;
-        listView = (ListView)findViewById(R.id.listView_history);
+        ListView listView = (ListView)findViewById(R.id.listView_history);
         arrayAdapter = new BikeHistoryAdapter(this,R.layout.history_user,ride_history);
         listView.setAdapter(arrayAdapter);
 
@@ -55,3 +56,5 @@ public class RideHistory extends Activity {
         }
     }
 }
+
+
