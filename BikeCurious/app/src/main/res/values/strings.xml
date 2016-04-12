@@ -28,6 +28,7 @@
     <string name="empty">No Address Entered</string>
     <string name="login_screen_text">Everyone get\'s a little Bike Curious every now and then</string>
     <string name="add_ride_empty_toast">Please enter ride name</string>
-    <string name="hint_ride_name">Ride Name</string>
+    <string name="hint_ride_name">new ride</string>
     <string name="button_add_ride">Add Ride</string>
+    <string name="textView_no_rides">No Rides Logged</string>
 </resources>

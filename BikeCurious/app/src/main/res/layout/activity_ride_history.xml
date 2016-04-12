@@ -29,8 +29,7 @@
         android:scaleType="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignTop="@id/listView_history"
-        android:src="@mipmap/charizard"/>
+        android:layout_alignTop="@id/listView_history"/>
 
 <!--    <Button
         android:id="@+id/button_add_ride"
@@ -61,9 +60,10 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="9dp"
         android:background="@android:color/transparent"
-        android:textColor="@color/grey"
-        android:textColorHint="@color/green"
+        android:textColor="@color/green"
+        android:textColorHint="@color/grey"
         android:hint="@string/hint_ride_name"/>
 
 
