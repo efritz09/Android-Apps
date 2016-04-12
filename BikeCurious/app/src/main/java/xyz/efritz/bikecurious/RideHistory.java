@@ -4,22 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class RideHistory extends Activity {
-
-    String[] dick = {"dick","balls"};
-    ArrayList<String> rides = new ArrayList<String>();
+//    It's in this form because Ride is in BikeHistoryAdapter.java
+    ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
+//    ArrayList<String> times = new ArrayList<String>();
+    BikeHistoryAdapter arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,14 +27,15 @@ public class RideHistory extends Activity {
 
 
         ListView listView;
-        BikeHistoryAdapter arrayAdapter;
         listView = (ListView)findViewById(R.id.listView_history);
-        arrayAdapter = new BikeHistoryAdapter(this,R.layout.history_user,rides);
+        arrayAdapter = new BikeHistoryAdapter(this,R.layout.history_user,ride_history);
         listView.setAdapter(arrayAdapter);
 
         //use this to get click shit
 //        public void onItemClickListener(AdapterView<> parent, View v, int position, long id) {
 
+        ImageView imageView = (ImageView)findViewById(R.id.history_user_image);
+        Picasso.with(this).load(R.drawable.face).fit().transform(new CircleTransform()).into(imageView); //.transform(new CircleTransform())
     }
 
     public void click_add_ride(View view) {
@@ -43,7 +44,14 @@ public class RideHistory extends Activity {
         EditText new_ride = (EditText)findViewById(R.id.editText_add_ride);
         if(new_ride.getText().toString().equals("")) Toast.makeText(context, R.string.add_ride_empty_toast,Toast.LENGTH_SHORT).show();
         else {
-            rides.add(new_ride.getText().toString());
+            BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
+            ride.location = new_ride.getText().toString();
+            ride.date = DateFormat.getDateTimeInstance().format(new Date());
+            ride.imageID = 0;
+            ride_history.add(ride);
+//            rides.add(new_ride.getText().toString());
+//            times.add(DateFormat.getDateTimeInstance().format(new Date()));
+            arrayAdapter.notifyDataSetChanged();
         }
     }
 }

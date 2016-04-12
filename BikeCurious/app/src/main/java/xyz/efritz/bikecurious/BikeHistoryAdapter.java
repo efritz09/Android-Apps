@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,9 +22,10 @@ import com.squareup.picasso.Picasso;
 public class BikeHistoryAdapter extends ArrayAdapter {
     Context context;
     int layoutResourceId;
-    ArrayList<String> data;
+    ArrayList<Ride> data;
 
-    public BikeHistoryAdapter(Context context, int layoutResourceID, ArrayList<String> data) {
+
+    public BikeHistoryAdapter(Context context, int layoutResourceID, ArrayList<Ride> data) {
         super(context, layoutResourceID, data);
         this.layoutResourceId = layoutResourceID;
         this.context = context;
@@ -41,27 +43,37 @@ public class BikeHistoryAdapter extends ArrayAdapter {
             holder = new ViewHolder();
             holder.textView1 = (TextView)row.findViewById(R.id.user_text1);
             holder.textView2 = (TextView)row.findViewById(R.id.user_text2);
+            holder.icon = (ImageView)row.findViewById(R.id.icon_history);
             row.setTag(holder);
         }
         else {
             holder = (ViewHolder)row.getTag();
         }
-
-        String string = data.get(position);
-        holder.textView1.setText(string);
-        String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-        holder.textView2.setText(currentDateTime);
-        Picasso.with(context).load(R.drawable.charizard).into(holder.icon);
-//        holder.icon.setImageResource(R.drawable.charizard);
-
+        Ride thisRide = data.get(position);
+//        String data_string = data.get(position);
+        holder.textView1.setText(thisRide.location);
+//        String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+//        date.add(currentDateTime);
+//        holder.textView2.setText(date.get(position));
+//        String date_string = date.get(position);
+        holder.textView2.setText(thisRide.date);
+        Picasso.with(context).load(R.mipmap.charizard).into(holder.icon);
 
         return row;
     }
+
 
     static class ViewHolder {
         TextView textView1;
         TextView textView2;
         ImageView icon;
+    }
+
+//    This has to be static or else shit will go wrong for some reason in RideHistory.java
+    static class Ride {
+        String location;
+        String date;
+        int imageID;
     }
 
 }

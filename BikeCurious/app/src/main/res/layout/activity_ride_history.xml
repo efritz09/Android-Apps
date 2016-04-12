@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,12 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="xyz.efritz.bikecurious.RideHistory">
 
-
-    <ImageView
-        android:id="@+id/history_background_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="center"/>
 
     <ListView
         android:id="@+id/listView_history"
@@ -26,16 +21,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="75dp" />
 
- <!--   <TextView android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FF0000"
-        android:text="No data"
-        android:layout_marginTop="200dp"
+    <ImageView
+        android:id="@+id/history_user_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp"/>-->
+        android:layout_alignTop="@id/listView_history"
+        android:src="@mipmap/charizard"/>
 
-    <Button
+<!--    <Button
         android:id="@+id/button_add_ride"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -46,13 +42,25 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp" />-->
+
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/button_add_ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#1E88E5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="click_add_ride"
+        android:text="@string/button_add_ride" />
 
     <EditText
         android:id="@+id/editText_add_ride"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/button_add_ride"
+        android:layout_alignParentBottom="true"
         android:hint="@string/hint_ride_name"/>
+
+
 
 </RelativeLayout>
