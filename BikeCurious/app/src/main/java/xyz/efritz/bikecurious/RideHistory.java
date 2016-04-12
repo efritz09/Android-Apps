@@ -58,7 +58,7 @@ public class RideHistory extends Activity {
             int randomNumber = random.nextInt(smash_max);
 
             ride.imageID = smash[randomNumber];
-            ride_history.add(ride);
+            ride_history.add(0,ride); //with zero, it adds the new one to the top, making it more like a stack
 //            rides.add(new_ride.getText().toString());
 //            times.add(DateFormat.getDateTimeInstance().format(new Date()));
             arrayAdapter.notifyDataSetChanged();
