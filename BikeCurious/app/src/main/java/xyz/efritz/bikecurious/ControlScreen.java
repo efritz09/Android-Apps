@@ -79,9 +79,9 @@ public class ControlScreen extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (bikeID.getText().toString().equals("")) {
-                    Toast.makeText(cont, getString(R.string.empty), Toast.LENGTH_LONG).show();
+                    Toast.makeText(cont, getString(R.string.toast_addr_empty), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(cont, getString(R.string.entered) + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(cont, getString(R.string.toast_addr_entered) + bikeID.getText().toString(), Toast.LENGTH_LONG).show();
                     connect.setText(getString(R.string.connected)); //getString(R.string.name)
                     id.setText(bikeID.getText().toString());
                     lockstat.setText(getString(R.string.unlocked));
@@ -101,8 +101,6 @@ public class ControlScreen extends Activity {
     }
 
     public void rider_history(View view) {
-//        Toast.makeText(getApplicationContext(), getString(R.string.norecords), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(), getString(R.string.fatass), Toast.LENGTH_SHORT).show();
         Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistory.class);
         startActivity(Start_History);
     }

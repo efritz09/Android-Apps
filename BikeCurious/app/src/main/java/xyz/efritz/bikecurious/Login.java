@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity {
             startActivity(Successful_login);
             finish();
         }else {
-            Toast.makeText(context, getString(R.string.failedlogin), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, getString(R.string.toast_failedlogin), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -18,9 +18,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class RideHistory extends Activity {
-//    It's in this form because Ride is in BikeHistoryAdapter.java
     static ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
-//    ArrayList<String> times = new ArrayList<String>();
     int[] smash = {R.mipmap.dk,R.mipmap.falcon,R.mipmap.fox,R.mipmap.jiggly,R.mipmap.kirby,
                     R.mipmap.link,R.mipmap.luigi,R.mipmap.mario,R.mipmap.ness,R.mipmap.pikachu,
                     R.mipmap.samus,R.mipmap.yoshi};
@@ -34,7 +32,6 @@ public class RideHistory extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_history);
 
-
         ListView listView = (ListView)findViewById(R.id.listView_history);
         arrayAdapter = new BikeHistoryAdapter(this,R.layout.history_user,ride_history);
         listView.setAdapter(arrayAdapter);
@@ -43,7 +40,7 @@ public class RideHistory extends Activity {
 //        public void onItemClickListener(AdapterView<> parent, View v, int position, long id) {
 
         ImageView imageView = (ImageView)findViewById(R.id.history_user_image);
-        Picasso.with(this).load(R.drawable.face).fit().transform(new CircleTransform()).into(imageView); //.transform(new CircleTransform())
+        Picasso.with(this).load(R.drawable.face).fit().transform(new CircleTransform()).into(imageView);
     }
 
     public void click_add_ride(View view) {
@@ -52,7 +49,7 @@ public class RideHistory extends Activity {
         EditText new_ride = (EditText)findViewById(R.id.editText_add_ride);
         BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
         if(new_ride.getText().toString().equals("")) {
-            Toast.makeText(context, R.string.add_ride_empty_toast,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.toast_add_ride_empty,Toast.LENGTH_SHORT).show();
             ride.location = getString(R.string.new_ride_empty_location);
         }
         else {
@@ -62,9 +59,8 @@ public class RideHistory extends Activity {
         int randomNumber = random.nextInt(smash_max);
 
         ride.imageID = smash[randomNumber];
-        ride_history.add(0, ride); //with zero, it adds the new one to the top, making it more like a stack
-//            rides.add(new_ride.getText().toString());
-//            times.add(DateFormat.getDateTimeInstance().format(new Date()));
+        ride_history.add(0, ride);
+        new_ride.getText().clear();
         arrayAdapter.notifyDataSetChanged();
     }
 }

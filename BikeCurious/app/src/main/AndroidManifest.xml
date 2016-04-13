@@ -16,10 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ControlScreen" />
-        <activity android:name=".RideHistory"></activity>
+        <activity android:name=".RideHistory"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 </manifest>
 
-
-    <!--android:debuggable="true"-->
