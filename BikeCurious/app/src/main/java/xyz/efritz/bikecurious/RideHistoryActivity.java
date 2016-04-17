@@ -1,25 +1,27 @@
 package xyz.efritz.bikecurious;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,11 +53,46 @@ public class RideHistoryActivity extends Activity {
         ListView listView = (ListView) findViewById(R.id.listView_history);
         arrayAdapter = new BikeHistoryAdapter(this, R.layout.history_user, ride_history);
         listView.setAdapter(arrayAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> av, View v, int pos, long id) {
+                delete_dialog(pos);
+                return false;
+            }
+        });
+
+//        registerForContextMenu(listView);
         //use this to get click shit
 //        public void onItemClickListener(AdapterView<> parent, View v, int position, long id) {
 
         ImageView imageView = (ImageView) findViewById(R.id.history_user_image);
         Picasso.with(this).load(R.drawable.face).fit().transform(new CircleTransform()).into(imageView);
+
+
+    }
+    public void delete_dialog(int pos) {
+        Context context = RideHistoryActivity.this;
+        final int index = pos;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View dialogView = inflater.inflate(R.layout.delete_ride, null);
+        builder.setView(dialogView);
+        builder.setTitle("Delete Ride?");
+        builder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ride_history.remove(index);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void click_add_ride(View view) {
@@ -79,6 +116,7 @@ public class RideHistoryActivity extends Activity {
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 //        saveToInternalStorage(ride_history);
     }
+
 
 //    public void saveToInternalStorage(ArrayList<BikeHistoryAdapter.Ride> data) {
 //        try {

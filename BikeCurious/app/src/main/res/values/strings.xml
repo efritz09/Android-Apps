@@ -42,5 +42,7 @@
     <string name="toast_username_taken">Username already taken</string>
     <string name="empty"></string>
     <string name="logout">logout</string>
+    <string name="delete">delete</string>
+
 
 </resources>

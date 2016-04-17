@@ -2,6 +2,9 @@ package xyz.efritz.bikecurious;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,19 +18,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ControlScreenActivity extends Activity {
-
+    private BluetoothAdapter bluetoothAdapter;
+//    private LeDeviceListAdapter mLeDeviceListAdapter;
+    private final static int REQUEST_ENABLE_BT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
+/*--------------Code from developer.android.com--------------*/
+        // Initializes Bluetooth adapter.
+        final BluetoothManager bluetoothManager =
+                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+
+        //ensures bluetooth is available and is enabled
+        if(bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
 
         Switch mode, state;
         mode = (Switch) findViewById(R.id.lightMode);
-        state = (Switch) findViewById(R.id.lightState);
-
         mode.setChecked(true);
-        state.setChecked(true);
-
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             TextView mode_switch = (TextView) findViewById(R.id.mode_text);
 
@@ -40,7 +52,8 @@ public class ControlScreenActivity extends Activity {
                 }
             }
         });
-
+        state = (Switch) findViewById(R.id.lightState);
+        state.setChecked(true);
         state.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             TextView state_switch = (TextView) findViewById(R.id.state_text);
 
@@ -54,6 +67,20 @@ public class ControlScreenActivity extends Activity {
             }
         });
 
+//        private BluetoothAdapter.LeScanCallback mLeScanCallback =
+//                new BluetoothAdapter.LeScanCallback() {
+//                    @Override
+//                    public void onLeScan(final BluetoothDevice device, int rssi,
+//                                         byte[] scanRecord) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mLeDeviceListAdapter.addDevice(device);
+//                                mLeDeviceListAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+//                    }
+//                };
     }
 
     public void unlock(View view) {
