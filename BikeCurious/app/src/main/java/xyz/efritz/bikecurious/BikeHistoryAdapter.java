@@ -1,8 +1,6 @@
 package xyz.efritz.bikecurious;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
