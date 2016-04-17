@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-public class RideHistory extends Activity {
+public class RideHistoryActivity extends Activity {
     static ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
     int[] smash = {R.mipmap.dk,R.mipmap.falcon,R.mipmap.fox,R.mipmap.jiggly,R.mipmap.kirby,
                     R.mipmap.link,R.mipmap.luigi,R.mipmap.mario,R.mipmap.ness,R.mipmap.pikachu,

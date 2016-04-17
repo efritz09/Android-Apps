@@ -32,4 +32,14 @@
     <string name="toast_failedlogin">Login Failed</string>
     <string name="toast_addr_empty">No Address Entered</string>
     <string name="toast_addr_entered">Entered: </string>
+    <string name="register_new_user">Register</string>
+    <string name="dialog_register_new_user">Enter a username and password</string>
+    <string name="hint_register_username">Enter a Username</string>
+    <string name="hint_register_password">Enter a Password</string>
+    <string name="hint_register_confirm_password">Re-enter Password</string>
+
+    <string name="toast_password_mismatch">Passwords don\'t match</string>
+    <string name="toast_username_taken">Username already taken</string>
+    <string name="empty"></string>
+
 </resources>

@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ControlScreen extends Activity {
+public class ControlScreenActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class ControlScreen extends Activity {
     }
 
     public void rider_history(View view) {
-        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistory.class);
+        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistoryActivity.class);
         startActivity(Start_History);
     }
 

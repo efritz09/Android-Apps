@@ -1,8 +1,5 @@
 package xyz.efritz.bikecurious;
 
-/**
- * Created by Eric on 4/10/2016.
- */
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;

@@ -33,7 +33,8 @@
         android:layout_below="@id/textView"
         android:textColor="@color/green"
         android:textColorHint="@color/grey"
-        android:background="@android:color/transparent"
+        android:backgroundTint="@color/lessdark"
+        android:background="@color/lessdark"
         android:layout_marginTop="50dp"
         android:layout_alignEnd="@+id/password_text"
         android:layout_alignRight="@id/password_text"
@@ -52,17 +53,29 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/green"
         android:textColorHint="@color/grey"
-        android:background="@android:color/transparent"
+        android:backgroundTint="@color/lessdark"
+        android:background="@color/lessdark"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
         android:text="@string/login_button"
         android:id="@+id/button"
         android:background="@drawable/button_rounded_corners"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="login_press" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text="@string/register_new_user"
+        android:id="@+id/button_register"
+        android:background="@drawable/button_rounded_corners"
+        android:onClick="register_press"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 
 </RelativeLayout>
