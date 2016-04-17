@@ -7,25 +7,31 @@
     <EditText
         android:id="@+id/register_username"
         android:hint="@string/hint_register_username"
+        android:singleLine="true"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/register_password"
         android:hint="@string/hint_register_password"
         android:inputType="textPassword"
+        android:singleLine="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/register_confrim_password"
         android:hint="@string/hint_register_confirm_password"
         android:inputType="textPassword"
+        android:singleLine="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
 
 

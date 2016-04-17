@@ -29,7 +29,7 @@
     <string name="hint_ride_name"><i>new ride</i></string>
 
     <string name="toast_add_ride_empty">Consider entering a unique name</string>
-    <string name="toast_failedlogin">Login Failed</string>
+    <string name="toast_failedlogin">Username or Password Incorrect</string>
     <string name="toast_addr_empty">No Address Entered</string>
     <string name="toast_addr_entered">Entered: </string>
     <string name="register_new_user">Register</string>
@@ -41,5 +41,6 @@
     <string name="toast_password_mismatch">Passwords don\'t match</string>
     <string name="toast_username_taken">Username already taken</string>
     <string name="empty"></string>
+    <string name="logout">logout</string>
 
 </resources>

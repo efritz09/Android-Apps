@@ -105,4 +105,10 @@ public class ControlScreenActivity extends Activity {
         startActivity(Start_History);
     }
 
+    public void click_logout(View view) {
+        Intent login = new Intent(this, xyz.efritz.bikecurious.LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
 }
