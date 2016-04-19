@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -49,7 +51,7 @@ import java.util.UUID;
 
 public class ControlScreenActivity extends Activity {
     public static String TAG = "ControlScreenActivity";
-    final String filterAddr = "test";
+    final String filterAddr = "E4:F3:CB:6E:57:3E";
     Boolean autoConnectBoolean = true;
     Boolean writingFlag = false;
     BluetoothGattCallback gattCallback;
@@ -63,8 +65,6 @@ public class ControlScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
-        Log.d(TAG, "test message");
-
 
 
         Switch mode, state;
@@ -96,17 +96,134 @@ public class ControlScreenActivity extends Activity {
                 }
             }
         });
+
+
+        gattCallback = new BluetoothGattCallback() {
+            @Override
+            public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                //connect, disconnect, error handling
+                super.onConnectionStateChange(gatt, status, newState);
+                if(newState == BluetoothGatt.STATE_CONNECTED) {
+                    //connected to device, start discovering services
+                    if (!gatt.discoverServices()) {
+                        Log.i(TAG, "gatt not discovered");
+                        //connectFailure();
+                    } else {
+                        Log.i(TAG, "gatt discovered");
+//                        enableSwitches();
+                    }
+                }
+                else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                    Log.i(TAG, "clean up");
+//                    disableSwitches();
+                    //clean up connection
+                }
+            }
+
+            @Override
+            public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                //set the listener for characteristic. UUIDs
+                super.onServicesDiscovered(gatt, status);
+                //notify connection failure if service discovery failed
+                if(status == BluetoothGatt.GATT_FAILURE) {
+                    Log.i(TAG, "GATT FAILURE");
+                    return;
+                }
+                //save reference to each UART characteristic, module level
+                //uart_uuid can be equal to tx_uuid
+                tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
+                //-----------enable notifications
+//                if(!gatt.setCharacteristicNotification(tx, true)) {
+//                    Log.i(TAG, "Doing something, fuck if I know");
+//                    return;
+//                }
+//                BluetoothGattDescriptor desc = tx.getDescriptor(CLIENT_UUID);
+//                if(desc == null) {
+//                    //print something
+//                    return;
+//                }
+//                tx.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                if(!gatt.writeDescriptor(desc)) {
+//                    //success
+//                    return;
+//                }
+                //---------------------------//
+            }
+
+            @Override
+            public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                //receiving
+                super.onCharacteristicChanged(gatt, characteristic);
+                Log.i(TAG,characteristic.getStringValue(0));
+                //do something with the data
+            }
+
+            @Override
+            public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                //write complete
+                super.onCharacteristicWrite(gatt, characteristic, status);
+                Log.i(TAG,"Write complete");
+                if(status != BluetoothGatt.GATT_SUCCESS) {
+                    Log.i(TAG,"ERROR");
+                    //error handling
+                }
+                writingFlag = false;
+            }
+
+            public void disconnect() {
+                if(gatt != null) {
+                    gatt.disconnect();
+                }
+                gatt = null;
+                tx = null;
+                rx = null;
+            }
+        };
     }
 
+    private void disableSwitches() {
+        Switch mode, state;
+        mode = (Switch) findViewById(R.id.lightMode);
+        state = (Switch) findViewById(R.id.lightState);
+        mode.setClickable(true);
+        state.setClickable(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mode.setThumbTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+            state.setThumbTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+            mode.setTrackTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+            state.setTrackTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+        }
+        TextView modeTitle, stateTitle;
+        modeTitle = (TextView)findViewById(R.id.mode_title);
+        stateTitle = (TextView)findViewById(R.id.state_title);
+        modeTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+        stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
+    }
+    private void enableSwitches() {
+        Switch mode, state;
+        mode = (Switch) findViewById(R.id.lightMode);
+        state = (Switch) findViewById(R.id.lightState);
+        mode.setClickable(false);
+        state.setClickable(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mode.setThumbTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green)));
+            state.setThumbTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green)));
+            mode.setTrackTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.darkgreen)));
+            state.setTrackTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.darkgreen)));
+        }
+        TextView modeTitle, stateTitle;
+        modeTitle = (TextView)findViewById(R.id.mode_title);
+        stateTitle = (TextView)findViewById(R.id.state_title);
+        modeTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
+        stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
 
-
+    }
 
     public void unlock(View view) {
-
-        Log.d(TAG, "test message part 2");
         //open display
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText bikeID = new EditText(getApplicationContext());
+        bikeID.setText(filterAddr);
         bikeID.setTextColor(ContextCompat.getColor(this, R.color.black));
         bikeID.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
         //Use this if version < 23 (maybe add an if statement later?)
@@ -145,101 +262,14 @@ public class ControlScreenActivity extends Activity {
                 adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
                     @Override
                     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                        Log.d(TAG,"onLeScan called");
                         if (device.getAddress().equals(filterAddr)) {
                             //make available to whole module
+                            Log.i(TAG,"Found the right one");
                             gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
                         }
                     }
                 });
 
-
-
-
-                gattCallback = new BluetoothGattCallback() {
-                    @Override
-                    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-                        //connect, disconnect, error handling
-                        super.onConnectionStateChange(gatt, status, newState);
-                        if(newState == BluetoothGatt.STATE_CONNECTED) {
-                            //connected to device, start discovering services
-                            if (!gatt.discoverServices()) {
-                                Log.d(TAG, "gatt not discovered");
-                                //connectFailure();
-                            } else {
-                                Log.d(TAG, "gatt discovered");
-                                //connectFailure();
-                            }
-                        }
-                        else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-                            Log.d(TAG, "clean up");
-                            //clean up connection
-                        }
-                    }
-
-                    @Override
-                    public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-                        //set the listener for characteristic. UUIDs
-                        super.onServicesDiscovered(gatt, status);
-                        //notify connection failure if service discovery failed
-                        if(status == BluetoothGatt.GATT_FAILURE) {
-                            //print something
-                            return;
-                        }
-                        //save reference to each UART characteristic, module level
-                        //uart_uuid can be equal to tx_uuid
-                        BluetoothGattCharacteristic tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
-                        if(!gatt.setCharacteristicNotification(rx, true)) {
-                            //print something
-                            return;
-                        }
-
-                        //-----------enable notifications
-//                        BluetoothGattDescriptor desc = tx.getDescriptor(CLIENT_UUID);
-//                        if(desc == null) {
-//                            //print something
-//                            return;
-//                        }
-//                        tx.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-//                        if(!gatt.writeDescriptor(desc)) {
-//                            //success
-//                            return;
-//                        }
-                        //---------------------------//
-                    }
-
-                    @Override
-                    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-                        //receiving
-                        super.onCharacteristicChanged(gatt, characteristic);
-                        Log.i("bikecurious",characteristic.getStringValue(0));
-                        //do something with the data
-                    }
-
-                    @Override
-                    public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-                        //write complete
-                        super.onCharacteristicWrite(gatt, characteristic, status);
-                        if(status != BluetoothGatt.GATT_SUCCESS) {
-                            //error handling
-                        }
-                        writingFlag = false;
-                    }
-
-                    @Override
-                    public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-                        super.onCharacteristicRead(gatt, characteristic, status);
-                    }
-
-                    public void disconnect() {
-                        if(gatt != null) {
-                            gatt.disconnect();
-                        }
-                        gatt = null;
-                        tx = null;
-                        rx = null;
-                    }
-                };
 
 //
             }
@@ -259,6 +289,7 @@ public class ControlScreenActivity extends Activity {
 //        startActivity(Start_History);
         //code to send something
         String data = "fuck you";
+        Log.i(TAG,data);
         tx.setValue(data);
         writingFlag = true;
         gatt.writeCharacteristic(tx);
