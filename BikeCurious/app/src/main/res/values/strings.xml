@@ -44,5 +44,8 @@
     <string name="logout">logout</string>
     <string name="delete">delete</string>
 
+    <string name="ble_not_supported">BLE NOT SUPPORTED</string>
+    <string name="error_bluetooth_not_supported">bluetooth not supported</string>
+
 
 </resources>

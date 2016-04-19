@@ -4,12 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -17,25 +24,48 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.app.Activity;
+import android.app.ListActivity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
 public class ControlScreenActivity extends Activity {
-    private BluetoothAdapter bluetoothAdapter;
-//    private LeDeviceListAdapter mLeDeviceListAdapter;
-    private final static int REQUEST_ENABLE_BT = 1;
-    @Override
+    public static String TAG = "ControlScreenActivity";
+    final String filterAddr = "test";
+    Boolean autoConnectBoolean = true;
+    Boolean writingFlag = false;
+    BluetoothGattCallback gattCallback;
+    BluetoothAdapter.LeScanCallback callback;
+    BluetoothGatt gatt;
+    BluetoothGattCharacteristic tx;
+    BluetoothGattCharacteristic rx;
+    public static UUID TX_UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
+    public static UUID UART_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
+    public static UUID CLIENT_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
-/*--------------Code from developer.android.com--------------*/
-        // Initializes Bluetooth adapter.
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        bluetoothAdapter = bluetoothManager.getAdapter();
+        Log.d(TAG, "test message");
 
-        //ensures bluetooth is available and is enabled
-        if(bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
+
 
         Switch mode, state;
         mode = (Switch) findViewById(R.id.lightMode);
@@ -66,24 +96,14 @@ public class ControlScreenActivity extends Activity {
                 }
             }
         });
-
-//        private BluetoothAdapter.LeScanCallback mLeScanCallback =
-//                new BluetoothAdapter.LeScanCallback() {
-//                    @Override
-//                    public void onLeScan(final BluetoothDevice device, int rssi,
-//                                         byte[] scanRecord) {
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                mLeDeviceListAdapter.addDevice(device);
-//                                mLeDeviceListAdapter.notifyDataSetChanged();
-//                            }
-//                        });
-//                    }
-//                };
     }
 
+
+
+
     public void unlock(View view) {
+
+        Log.d(TAG, "test message part 2");
         //open display
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText bikeID = new EditText(getApplicationContext());
@@ -105,6 +125,7 @@ public class ControlScreenActivity extends Activity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //------------pre-bluetooth code
                 if (bikeID.getText().toString().equals("")) {
                     Toast.makeText(cont, getString(R.string.toast_addr_empty), Toast.LENGTH_LONG).show();
                 } else {
@@ -114,7 +135,113 @@ public class ControlScreenActivity extends Activity {
                     lockstat.setText(getString(R.string.unlocked));
                     lockstat.setTextColor(ContextCompat.getColor(cont, R.color.red));
                 }
+                //--------------------------//
 
+
+
+
+                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                //starts the scan
+                adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
+                    @Override
+                    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+                        Log.d(TAG,"onLeScan called");
+                        if (device.getAddress().equals(filterAddr)) {
+                            //make available to whole module
+                            gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
+                        }
+                    }
+                });
+
+
+
+
+                gattCallback = new BluetoothGattCallback() {
+                    @Override
+                    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                        //connect, disconnect, error handling
+                        super.onConnectionStateChange(gatt, status, newState);
+                        if(newState == BluetoothGatt.STATE_CONNECTED) {
+                            //connected to device, start discovering services
+                            if (!gatt.discoverServices()) {
+                                Log.d(TAG, "gatt not discovered");
+                                //connectFailure();
+                            } else {
+                                Log.d(TAG, "gatt discovered");
+                                //connectFailure();
+                            }
+                        }
+                        else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                            Log.d(TAG, "clean up");
+                            //clean up connection
+                        }
+                    }
+
+                    @Override
+                    public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                        //set the listener for characteristic. UUIDs
+                        super.onServicesDiscovered(gatt, status);
+                        //notify connection failure if service discovery failed
+                        if(status == BluetoothGatt.GATT_FAILURE) {
+                            //print something
+                            return;
+                        }
+                        //save reference to each UART characteristic, module level
+                        //uart_uuid can be equal to tx_uuid
+                        BluetoothGattCharacteristic tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
+                        if(!gatt.setCharacteristicNotification(rx, true)) {
+                            //print something
+                            return;
+                        }
+
+                        //-----------enable notifications
+//                        BluetoothGattDescriptor desc = tx.getDescriptor(CLIENT_UUID);
+//                        if(desc == null) {
+//                            //print something
+//                            return;
+//                        }
+//                        tx.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                        if(!gatt.writeDescriptor(desc)) {
+//                            //success
+//                            return;
+//                        }
+                        //---------------------------//
+                    }
+
+                    @Override
+                    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                        //receiving
+                        super.onCharacteristicChanged(gatt, characteristic);
+                        Log.i("bikecurious",characteristic.getStringValue(0));
+                        //do something with the data
+                    }
+
+                    @Override
+                    public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                        //write complete
+                        super.onCharacteristicWrite(gatt, characteristic, status);
+                        if(status != BluetoothGatt.GATT_SUCCESS) {
+                            //error handling
+                        }
+                        writingFlag = false;
+                    }
+
+                    @Override
+                    public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                        super.onCharacteristicRead(gatt, characteristic, status);
+                    }
+
+                    public void disconnect() {
+                        if(gatt != null) {
+                            gatt.disconnect();
+                        }
+                        gatt = null;
+                        tx = null;
+                        rx = null;
+                    }
+                };
+
+//
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -128,8 +255,13 @@ public class ControlScreenActivity extends Activity {
     }
 
     public void rider_history(View view) {
-        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistoryActivity.class);
-        startActivity(Start_History);
+//        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistoryActivity.class);
+//        startActivity(Start_History);
+        //code to send something
+        String data = "fuck you";
+        tx.setValue(data);
+        writingFlag = true;
+        gatt.writeCharacteristic(tx);
     }
 
     public void click_logout(View view) {
@@ -137,5 +269,4 @@ public class ControlScreenActivity extends Activity {
         startActivity(login);
         finish();
     }
-
 }
