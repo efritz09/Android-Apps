@@ -57,6 +57,7 @@ public class ControlScreenActivity extends Activity {
     public String userAddr;
     Boolean autoConnectBoolean = true;
     Boolean writingFlag = false;
+    Boolean locked = true;
     BluetoothGattCallback gattCallback;
     BluetoothAdapter.LeScanCallback callback;
     BluetoothGatt gatt;
@@ -82,8 +83,18 @@ public class ControlScreenActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mode_switch.setText(getString(R.string.modeAuto));
+                    String data = "A";
+                    Log.i(TAG,data);
+                    tx.setValue(data);
+                    writingFlag = true;
+                    gatt.writeCharacteristic(tx);
                 } else {
                     mode_switch.setText(getString(R.string.modeOn));
+                    String data = "O";
+                    Log.i(TAG,data);
+                    tx.setValue(data);
+                    writingFlag = true;
+                    gatt.writeCharacteristic(tx);
                 }
             }
         });
@@ -96,8 +107,18 @@ public class ControlScreenActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     state_switch.setText(getString(R.string.stateSolid));
+                    String data = "S";
+                    Log.i(TAG,data);
+                    tx.setValue(data);
+                    writingFlag = true;
+                    gatt.writeCharacteristic(tx);
                 } else {
                     state_switch.setText(getString(R.string.stateBlinking));
+                    String data = "B";
+                    Log.i(TAG,data);
+                    tx.setValue(data);
+                    writingFlag = true;
+                    gatt.writeCharacteristic(tx);
                 }
             }
         });
@@ -116,6 +137,7 @@ public class ControlScreenActivity extends Activity {
                     } else {
                         Log.i(TAG, "gatt discovered");
                         enableBluetoothControl();
+                        locked = false;
                     }
                 }
                 else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
@@ -192,6 +214,7 @@ public class ControlScreenActivity extends Activity {
         state = (Switch) findViewById(R.id.lightState);
         mode.setClickable(false);
         state.setClickable(false);
+        final Button lockButton = (Button)findViewById(R.id.lock_button);
         final TextView modeTitle, stateTitle, modeText, stateText, lockStatus, id, connect;
         lockStatus = (TextView)findViewById(R.id.lock_status);
         id = (TextView)findViewById(R.id.unique_identifier);
@@ -204,6 +227,8 @@ public class ControlScreenActivity extends Activity {
         refresh.post(new Runnable() {
             @Override
             public void run() {
+                lockButton.setText(R.string.button_bluetooth_unlock);
+                lockButton.setBackgroundColor(ContextCompat.getColor(ControlScreenActivity.this, R.color.green));
                 lockStatus.setText(getString(R.string.locked));
                 connect.setText(getString(R.string.disconnected));
                 id.setText("");
@@ -212,39 +237,19 @@ public class ControlScreenActivity extends Activity {
                 stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.lessdark)));
                 modeText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.lessdark)));
                 stateText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.lessdark)));
+                connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey)));
             }
         });
 
     }
-//    public void disableBluetoothControl() {
-//        Switch mode, state;
-//        mode = (Switch) findViewById(R.id.lightMode);
-//        state = (Switch) findViewById(R.id.lightState);
-//        mode.setClickable(false);
-//        state.setClickable(false);
-//        TextView modeTitle, stateTitle, modeText, stateText, lockStatus, id, connect;
-//        lockStatus = (TextView)findViewById(R.id.lock_status);
-//        id = (TextView)findViewById(R.id.unique_identifier);
-//        connect = (TextView) findViewById(R.id.state_of_connection);
-//        modeTitle = (TextView)findViewById(R.id.mode_title);
-//        stateTitle = (TextView)findViewById(R.id.state_title);
-//        modeText = (TextView)findViewById(R.id.mode_text);
-//        stateText = (TextView)findViewById(R.id.state_text);
-//        lockStatus.setText(getString(R.string.locked));
-//        connect.setText(getString(R.string.disconnected));
-//        id.setText("");
-//        lockStatus.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.red)));
-//        modeTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
-//        stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
-//        modeText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
-//        stateText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lessdark)));
-//    }
+
     public void enableBluetoothControl() {
         Switch mode, state;
         mode = (Switch) findViewById(R.id.lightMode);
         state = (Switch) findViewById(R.id.lightState);
         mode.setClickable(true);
         state.setClickable(true);
+        final Button lockButton = (Button)findViewById(R.id.lock_button);
         final TextView modeTitle, stateTitle, modeText, stateText, lockStatus, id, connect;
         lockStatus = (TextView)findViewById(R.id.lock_status);
         id = (TextView)findViewById(R.id.unique_identifier);
@@ -257,6 +262,8 @@ public class ControlScreenActivity extends Activity {
         refresh.post(new Runnable() {
             @Override
             public void run() {
+                lockButton.setText(R.string.button_bluetooth_lock);
+                lockButton.setBackgroundColor(ContextCompat.getColor(ControlScreenActivity.this, R.color.stanford));
                 lockStatus.setText(getString(R.string.unlocked));
                 connect.setText(getString(R.string.connected));
                 id.setText(userAddr);
@@ -265,38 +272,18 @@ public class ControlScreenActivity extends Activity {
                 stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey)));
                 modeText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey)));
                 stateText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey)));
+                connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey)));
             }
         });
 
     }
 
-//    public void enableBluetoothControl() {
-//        Log.i(TAG,"enabling controls");
-//        Switch mode, state;
-//        mode = (Switch) findViewById(R.id.lightMode);
-//        state = (Switch) findViewById(R.id.lightState);
-//        mode.setClickable(true);
-//        state.setClickable(true);
-//        TextView modeTitle, stateTitle, modeText, stateText, lockStatus, id, connect;
-//        lockStatus = (TextView)findViewById(R.id.lock_status);
-//        id = (TextView)findViewById(R.id.unique_identifier);
-//        connect = (TextView) findViewById(R.id.state_of_connection);
-//        modeTitle = (TextView)findViewById(R.id.mode_title);
-//        stateTitle = (TextView)findViewById(R.id.state_title);
-//        modeText = (TextView)findViewById(R.id.mode_text);
-//        stateText = (TextView)findViewById(R.id.state_text);
-//        lockStatus.setText(getString(R.string.unlocked));
-//        connect.setText(getString(R.string.connected));
-//        id.setText(userAddr);
-//        lockStatus.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green)));
-//        modeTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-//        stateTitle.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-//        modeText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-//        stateText.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-//
-//    }
-
     public void unlock(View view) {
+        if(!locked) {
+            gatt.disconnect();
+            locked = true;
+            return;
+        }
         //open display
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText bikeID = new EditText(getApplicationContext());
@@ -343,6 +330,15 @@ public class ControlScreenActivity extends Activity {
                         if (device.getAddress().equals(filterAddr)) {
                             //make available to whole module
                             Log.i(TAG,"Found the right one");
+                            final TextView connect = (TextView) findViewById(R.id.state_of_connection);
+                            Handler refresh = new Handler(Looper.getMainLooper());
+                            refresh.post(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     connect.setText(getString(R.string.connecting));
+                                     connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
+                                 }
+                             });
                             gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
                         }
                     }
@@ -363,14 +359,9 @@ public class ControlScreenActivity extends Activity {
     }
 
     public void rider_history(View view) {
-//        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistoryActivity.class);
-//        startActivity(Start_History);
-        //code to send something
-        String data = "fuck you";
-        Log.i(TAG,data);
-        tx.setValue(data);
-        writingFlag = true;
-        gatt.writeCharacteristic(tx);
+        Intent Start_History = new Intent(this, xyz.efritz.bikecurious.RideHistoryActivity.class);
+        startActivity(Start_History);
+
     }
 
     public void click_logout(View view) {

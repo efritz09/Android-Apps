@@ -12,4 +12,6 @@
     <color name="dark">#303030</color>
     <color name="lessdark">#404040</color>
     <color name="stanford">#8C1515</color>
+    <color name="yellow">#ffff00</color>
+    <color name="gold">#cccc33</color>
 </resources>

@@ -2,7 +2,8 @@
     <string name="app_name">Bike Curious</string>
     <string name="login_button">Satisfy my Curiosity</string>
     <string name="disconnected">Disconnected\t</string>
-    <string name="unlock_status">unlock</string>
+    <string name="connecting">Connecting...</string>
+    <string name="button_bluetooth_unlock">unlock</string>
     <string name="sample_unique_ID">10:C3:7B:93:40:BC</string>
     <string name="light_mode">Mode\t\t</string>
     <string name="light_state">State\t\t</string>
@@ -15,7 +16,7 @@
     <string name="unlockmsg">Enter Bike to unlock:</string>
     <string name="unlockquestion">Unlock?</string>
     <string name="accept">accept</string>
-    <string name="connected">Connected:	</string>
+    <string name="connected">Connected:\t</string>
     <string name="unlocked">\tUnlocked</string>
     <string name="locked">\tLocked</string>
     <string name="cancel">cancel</string>
@@ -47,6 +48,7 @@
 
     <string name="ble_not_supported">BLE NOT SUPPORTED</string>
     <string name="error_bluetooth_not_supported">bluetooth not supported</string>
+    <string name="button_bluetooth_lock">Lock</string>
 
 
 </resources>
