@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Bike Curious</string>
     <string name="login_button">Satisfy my Curiosity</string>
-    <string name="state_of_connection">Disconnected\t</string>
+    <string name="disconnected">Disconnected\t</string>
     <string name="unlock_status">unlock</string>
     <string name="sample_unique_ID">10:C3:7B:93:40:BC</string>
     <string name="light_mode">Mode\t\t</string>
@@ -16,7 +16,8 @@
     <string name="unlockquestion">Unlock?</string>
     <string name="accept">accept</string>
     <string name="connected">Connected:	</string>
-    <string name="unlocked">Unlocked</string>
+    <string name="unlocked">\tUnlocked</string>
+    <string name="locked">\tLocked</string>
     <string name="cancel">cancel</string>
     <string name="login_screen_text">Everyone gets a little Bike Curious now and then</string>
     <string name="button_add_ride">Add Ride</string>
