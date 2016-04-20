@@ -137,7 +137,6 @@ public class ControlScreenActivity extends Activity {
                     } else {
                         Log.i(TAG, "gatt discovered");
                         enableBluetoothControl();
-                        locked = false;
                     }
                 }
                 else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
@@ -159,6 +158,14 @@ public class ControlScreenActivity extends Activity {
                 //save reference to each UART characteristic, module level
                 //uart_uuid can be equal to tx_uuid
                 tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
+                Log.i(TAG,"discovered...");
+
+                String data = "C";
+                Log.i(TAG,data);
+                tx.setValue(data);
+                writingFlag = true;
+                gatt.writeCharacteristic(tx);
+                locked = false;
                 //-----------enable notifications
 //                if(!gatt.setCharacteristicNotification(tx, true)) {
 //                    Log.i(TAG, "Doing something, fuck if I know");
@@ -280,6 +287,12 @@ public class ControlScreenActivity extends Activity {
 
     public void unlock(View view) {
         if(!locked) {
+            Toast.makeText(getApplicationContext(),"locking",Toast.LENGTH_SHORT).show();
+            String data = "D";
+            Log.i(TAG,data);
+            tx.setValue(data);
+            writingFlag = true;
+            gatt.writeCharacteristic(tx);
             gatt.disconnect();
             locked = true;
             return;
