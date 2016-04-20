@@ -67,7 +67,7 @@ public class ControlScreenActivity extends Activity {
     public static UUID UART_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
     public static UUID CLIENT_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
-    public Activity activity = ControlScreenActivity.this;
+    BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
@@ -204,16 +204,17 @@ public class ControlScreenActivity extends Activity {
                 }
                 writingFlag = false;
             }
-
-            public void disconnect() {
-                if(gatt != null) {
-                    gatt.disconnect();
-                }
-                gatt = null;
-                tx = null;
-                rx = null;
-            }
         };
+    }
+
+    public void disconnect() {
+        if(gatt != null) {
+            gatt.disconnect();
+        }
+        gatt = null;
+        tx = null;
+        rx = null;
+        Toast.makeText(getApplicationContext(),"DISCONNECTED",Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -236,6 +237,7 @@ public class ControlScreenActivity extends Activity {
         stateTitle = (TextView)findViewById(R.id.state_title);
         modeText = (TextView)findViewById(R.id.mode_text);
         stateText = (TextView)findViewById(R.id.state_text);
+        //No idea what this does, but it was needed to make it work
         Handler refresh = new Handler(Looper.getMainLooper());
         refresh.post(new Runnable() {
             @Override
@@ -276,6 +278,7 @@ public class ControlScreenActivity extends Activity {
         stateTitle = (TextView)findViewById(R.id.state_title);
         modeText = (TextView)findViewById(R.id.mode_text);
         stateText = (TextView)findViewById(R.id.state_text);
+        //No idea what this does, but it was needed to make it work
         Handler refresh = new Handler(Looper.getMainLooper());
         refresh.post(new Runnable() {
             @Override
@@ -305,7 +308,7 @@ public class ControlScreenActivity extends Activity {
             tx.setValue(data);
             writingFlag = true;
             gatt.writeCharacteristic(tx);
-            gatt.disconnect();
+            disconnect();
             locked = true;
             return;
         }
@@ -347,13 +350,16 @@ public class ControlScreenActivity extends Activity {
 
 
 
-                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+
                 //starts the scan
                 adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
                     @Override
                     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+                        Log.i(TAG,"SEARCHING..." + device.getAddress());
+
                         if (device.getAddress().equals(filterAddr)) {
                             //make available to whole module
+//                            Toast.makeText(getApplicationContext(),"Searching",Toast.LENGTH_SHORT).show();
                             Log.i(TAG,"Found the right one");
                             final TextView connect = (TextView) findViewById(R.id.state_of_connection);
                             Handler refresh = new Handler(Looper.getMainLooper());
