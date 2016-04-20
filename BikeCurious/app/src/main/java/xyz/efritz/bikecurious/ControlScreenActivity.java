@@ -131,12 +131,15 @@ public class ControlScreenActivity extends Activity {
                 super.onConnectionStateChange(gatt, status, newState);
                 if(newState == BluetoothGatt.STATE_CONNECTED) {
                     //connected to device, start discovering services
-                    if (!gatt.discoverServices()) {
-                        Log.i(TAG, "gatt not discovered");
-                        //connectFailure();
-                    } else {
-                        Log.i(TAG, "gatt discovered");
+                    if (status == BluetoothGatt.GATT_SUCCESS) {
+                        Log.i(TAG, "gatt was successful");
                         enableBluetoothControl(); //enable the widgets
+                        if (!gatt.discoverServices()) {
+                            Log.i(TAG, "gatt not discovered");
+                            //connectFailure();
+                        }
+                    } else {
+                        Log.i(TAG,"gatt was unsuccessful");
                     }
                 }
                 else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
@@ -202,20 +205,25 @@ public class ControlScreenActivity extends Activity {
                     Log.i(TAG,"ERROR");
                     //error handling
                 }
+                if(locked) disconnect();
+//                else Log.i(TAG,"some major fuckup");
                 writingFlag = false;
+            }
+
+
+            public void disconnect() {
+                if(gatt != null) {
+                    gatt.disconnect();
+                }
+                gatt = null;
+                tx = null;
+                rx = null;
+//                Toast.makeText(getApplicationContext(),"DISCONNECTED",Toast.LENGTH_SHORT).show();
             }
         };
     }
 
-    public void disconnect() {
-        if(gatt != null) {
-            gatt.disconnect();
-        }
-        gatt = null;
-        tx = null;
-        rx = null;
-        Toast.makeText(getApplicationContext(),"DISCONNECTED",Toast.LENGTH_SHORT).show();
-    }
+
 
     /*
     disableBluetoothControl() -- used when it is not connected
@@ -304,12 +312,11 @@ public class ControlScreenActivity extends Activity {
             Toast.makeText(getApplicationContext(),"locking",Toast.LENGTH_SHORT).show();
             //send a disconnect packet
             String data = "D";
-            Log.i(TAG,data);
+            Log.i(TAG, data);
             tx.setValue(data);
+            locked = true;
             writingFlag = true;
             gatt.writeCharacteristic(tx);
-            disconnect();
-            locked = true;
             return;
         }
         //open display
@@ -352,28 +359,53 @@ public class ControlScreenActivity extends Activity {
 
 
                 //starts the scan
-                adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
+                final BluetoothAdapter.LeScanCallback scanCallback = new BluetoothAdapter.LeScanCallback() {
                     @Override
                     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
                         Log.i(TAG,"SEARCHING..." + device.getAddress());
 
                         if (device.getAddress().equals(filterAddr)) {
+                            adapter.stopLeScan(this);
                             //make available to whole module
 //                            Toast.makeText(getApplicationContext(),"Searching",Toast.LENGTH_SHORT).show();
                             Log.i(TAG,"Found the right one");
                             final TextView connect = (TextView) findViewById(R.id.state_of_connection);
+                            //update colors n shit
                             Handler refresh = new Handler(Looper.getMainLooper());
                             refresh.post(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     connect.setText(getString(R.string.connecting));
-                                     connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
-                                 }
-                             });
+                                @Override
+                                public void run() {
+                                    connect.setText(getString(R.string.connecting));
+                                    connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
+                                }
+                            });
                             gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
                         }
                     }
-                });
+                };
+                adapter.startLeScan(scanCallback);
+//                adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
+//                    @Override
+//                    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+//                        Log.i(TAG,"SEARCHING..." + device.getAddress());
+//
+//                        if (device.getAddress().equals(filterAddr)) {
+//                            //make available to whole module
+////                            Toast.makeText(getApplicationContext(),"Searching",Toast.LENGTH_SHORT).show();
+//                            Log.i(TAG,"Found the right one");
+//                            final TextView connect = (TextView) findViewById(R.id.state_of_connection);
+//                            Handler refresh = new Handler(Looper.getMainLooper());
+//                            refresh.post(new Runnable() {
+//                                 @Override
+//                                 public void run() {
+//                                     connect.setText(getString(R.string.connecting));
+//                                     connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
+//                                 }
+//                             });
+//                            gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
+//                        }
+//                    }
+//                });
 
 
 //
