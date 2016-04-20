@@ -136,12 +136,12 @@ public class ControlScreenActivity extends Activity {
                         //connectFailure();
                     } else {
                         Log.i(TAG, "gatt discovered");
-                        enableBluetoothControl();
+                        enableBluetoothControl(); //enable the widgets
                     }
                 }
                 else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
                     Log.i(TAG, "clean up");
-                    disableBluetoothControl();
+                    disableBluetoothControl(); //disable the widgets
                     //clean up connection
                 }
             }
@@ -159,7 +159,8 @@ public class ControlScreenActivity extends Activity {
                 //uart_uuid can be equal to tx_uuid
                 tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
                 Log.i(TAG,"discovered...");
-
+                //send a "connected" data pack
+                //This sends multiple times but I don't know how to fix it
                 String data = "C";
                 Log.i(TAG,data);
                 tx.setValue(data);
@@ -215,6 +216,11 @@ public class ControlScreenActivity extends Activity {
         };
     }
 
+    /*
+    disableBluetoothControl() -- used when it is not connected
+    This sets the switches to disabled, changes the colors of the texts, and
+    changes the lock/unlock button to display "unlock"
+     */
     public void disableBluetoothControl() {
         Switch mode, state;
         mode = (Switch) findViewById(R.id.lightMode);
@@ -250,6 +256,11 @@ public class ControlScreenActivity extends Activity {
 
     }
 
+    /*
+    enableBluetoothControl() -- used when it is connected
+    This sets the switches to clickable, changes the colors of the texts, and
+    changes the lock/unlock button to display "lock"
+     */
     public void enableBluetoothControl() {
         Switch mode, state;
         mode = (Switch) findViewById(R.id.lightMode);
@@ -288,6 +299,7 @@ public class ControlScreenActivity extends Activity {
     public void unlock(View view) {
         if(!locked) {
             Toast.makeText(getApplicationContext(),"locking",Toast.LENGTH_SHORT).show();
+            //send a disconnect packet
             String data = "D";
             Log.i(TAG,data);
             tx.setValue(data);
