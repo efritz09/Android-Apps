@@ -30,7 +30,7 @@ import java.util.Random;
 public class RideHistoryActivity extends Activity {
     static final String HISTORY_FILENAME = "history";
 //    ArrayList<BikeHistoryAdapter.Ride> ride_history;
-    static ArrayList<BikeHistoryAdapter.Ride> ride_history = new ArrayList<>();
+    static ArrayList<Ride> ride_history = new ArrayList<>();
     int[] smash = {R.mipmap.dk, R.mipmap.falcon, R.mipmap.fox, R.mipmap.jiggly, R.mipmap.kirby,
             R.mipmap.link, R.mipmap.luigi, R.mipmap.mario, R.mipmap.ness, R.mipmap.pikachu,
             R.mipmap.samus, R.mipmap.yoshi};
@@ -98,7 +98,7 @@ public class RideHistoryActivity extends Activity {
     public void click_add_ride(View view) {
         Context context = getApplicationContext();
         EditText new_ride = (EditText) findViewById(R.id.editText_add_ride);
-        BikeHistoryAdapter.Ride ride = new BikeHistoryAdapter.Ride();
+        Ride ride = new Ride();
         if (new_ride.getText().toString().equals("")) {
 //            Toast.makeText(context, R.string.toast_add_ride_empty,Toast.LENGTH_SHORT).show();
             ride.location = getString(R.string.new_ride_empty_location);

@@ -53,11 +53,4 @@ public class BikeHistoryAdapter extends ArrayAdapter {
         TextView textView2;
         ImageView icon;
     }
-
-    static class Ride {
-        String location;
-        String date;
-        int imageID;
-    }
-
 }

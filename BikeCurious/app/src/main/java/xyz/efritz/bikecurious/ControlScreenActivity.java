@@ -145,6 +145,16 @@ public class ControlScreenActivity extends Activity {
                 else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
                     Log.i(TAG, "clean up");
                     disableBluetoothControl(); //disable the widgets
+
+                    //-------------------------------------------------------------------------------------------
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
+                    //-------------------------------------------------------------------------------------------
+
                     //clean up connection
                 }
             }
