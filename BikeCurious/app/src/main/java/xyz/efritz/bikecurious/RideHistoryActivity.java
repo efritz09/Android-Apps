@@ -5,12 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -18,8 +13,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -30,8 +23,6 @@ import java.util.Random;
 
 public class RideHistoryActivity extends Activity {
     static final String TAG = "RideHistoryActivity";
-    static final String HISTORY_FILENAME = "history";
-    //    ArrayList<BikeHistoryAdapter.Ride> ride_history;
     static ArrayList<Ride> ride_history;
     int[] smash = {R.mipmap.dk, R.mipmap.falcon, R.mipmap.fox, R.mipmap.jiggly, R.mipmap.kirby,
             R.mipmap.link, R.mipmap.luigi, R.mipmap.mario, R.mipmap.ness, R.mipmap.pikachu,
@@ -40,20 +31,19 @@ public class RideHistoryActivity extends Activity {
     Random random = new Random();
     BikeHistoryAdapter arrayAdapter;
     HistoryDatabaseAdapter historyAdapter;
-    Ride newRide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_history);
-
+        //open the database and populate the list if the history exists
         historyAdapter = new HistoryDatabaseAdapter(this);
         historyAdapter = historyAdapter.open();
         if(historyAdapter.isEmpty()) ride_history = new ArrayList<>();
         else ride_history = historyAdapter.getAllEntries();
-//        historyAdapter.isEmpty();
-//        ride_history.add(newRide);
+
+        //setup the listview with the ride_history
         ListView listView = (ListView) findViewById(R.id.listView_history);
         arrayAdapter = new BikeHistoryAdapter(this, R.layout.history_user, ride_history);
         listView.setAdapter(arrayAdapter);
@@ -65,13 +55,15 @@ public class RideHistoryActivity extends Activity {
             }
         });
 
-
         ImageView imageView = (ImageView) findViewById(R.id.history_user_image);
         Picasso.with(this).load(R.drawable.face).fit().transform(new CircleTransform()).into(imageView);
-
-
     }
 
+    /*
+    delete_dialog
+    allows the user to delete the selected ride
+    FUTURE: let the user change the name/icon?
+     */
     public void delete_dialog(int pos) {
         Context context = RideHistoryActivity.this;
         final int index = pos;
@@ -99,26 +91,30 @@ public class RideHistoryActivity extends Activity {
         dialog.show();
     }
 
+    /*
+    click_add_ride
+    allows the user to add a ride with a location name
+    FUTURE: let the user select the icon?
+     */
     public void click_add_ride(View view) {
-        Context context = getApplicationContext();
         EditText new_ride = (EditText) findViewById(R.id.editText_add_ride);
         Ride ride = new Ride();
         if (new_ride.getText().toString().equals("")) {
-//            Toast.makeText(context, R.string.toast_add_ride_empty,Toast.LENGTH_SHORT).show();
             ride.location = getString(R.string.new_ride_empty_location);
         } else {
             ride.location = new_ride.getText().toString();
         }
         ride.date = DateFormat.getDateTimeInstance().format(new Date());
         int randomNumber = random.nextInt(smash_max);
-
         ride.imageID = smash[randomNumber];
+
         //add to array adapter and database
         ride_history.add(0, ride);
         historyAdapter.insertEntry(ride.location, ride.date, ride.imageID);
 
         new_ride.getText().clear();
         arrayAdapter.notifyDataSetChanged();
+        //close the keyboard
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

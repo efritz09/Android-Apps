@@ -3,10 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:src="@drawable/falconpunch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/register_username"
         android:hint="@string/hint_register_username"

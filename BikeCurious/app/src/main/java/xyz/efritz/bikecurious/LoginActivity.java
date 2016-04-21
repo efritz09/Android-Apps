@@ -1,25 +1,18 @@
 package xyz.efritz.bikecurious;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     static HashMap<String,String> users = new HashMap<String,String>();
@@ -27,14 +20,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        users.put("t","p");
+        users.put("t","p"); //debugging override
     }
-    String testcode = "";
+
+    /*
+    login_press
+    checks the username and password. Launches controlScreenActivity if successful
+     */
     public void login_press(View view) {
         EditText e_username = (EditText)findViewById(R.id.username_text);
         EditText e_password = (EditText)findViewById(R.id.password_text);
         Context context = getApplicationContext();
-//        Toast.makeText(context, e_username.getText().toString()+"   "+e_password.getText().toString(), Toast.LENGTH_SHORT).show();
         String test = users.get(e_username.getText().toString());
         String pass = e_password.getText().toString();
         if(pass.equals(test)) {
@@ -45,19 +41,14 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(context, getString(R.string.toast_failedlogin), Toast.LENGTH_SHORT).show();
         }
 
-
-//        if( e_username.getText().toString().equals(testcode) && e_password.getText().toString().equals(testcode)) {
-//            Intent Successful_login = new Intent(this, xyz.efritz.bikecurious.ControlScreenActivity.class);
-//            startActivity(Successful_login);
-//            finish();
-//        }else {
-//            Toast.makeText(context, getString(R.string.toast_failedlogin), Toast.LENGTH_SHORT).show();
-//        }
     }
 
+    /*
+    register_press
+    let's the user register a new username and password. Adds it to the hashmap
+     */
     public void register_press(View view) {
         //open display
-        final Context context = getApplicationContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.register_dialog, null);
@@ -84,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final AlertDialog dialog = builder.create();
         dialog.show();
-        //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
