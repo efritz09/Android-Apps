@@ -12,8 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -246,14 +244,13 @@ public class ControlScreenActivity extends Activity {
                             Log.i(TAG, "Found the right one");
                             final TextView connect = (TextView) findViewById(R.id.state_of_connection);
                             //update colors n shit
-                            Handler refresh = new Handler(Looper.getMainLooper());
-                            refresh.post(new Runnable() {
+                            runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    connect.setText(getString(R.string.connecting));
-                                    connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
-                                }
-                            });
+                                   connect.setText(getString(R.string.connecting));
+                                   connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
+                               }
+                           });
                             gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
                         }
                     }
