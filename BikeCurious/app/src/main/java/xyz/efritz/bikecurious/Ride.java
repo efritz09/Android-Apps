@@ -8,12 +8,7 @@ public class Ride {
     String location;
     String date;
     int imageID;
-
-
-    int _id;
-    String _name;
-    String _password;
-
+    int ID;
 
     // constructor
     public Ride(){
@@ -25,10 +20,10 @@ public class Ride {
         this.imageID = imageID;
     }
 
-//    public Ride(String location, String date){
-//        this.location = location;
-//        this.date = date;
-//    }
+    public Ride(String location, String date){
+        this.location = location;
+        this.date = date;
+    }
 
     // getting location
     public String getLocation(){
@@ -58,6 +53,16 @@ public class Ride {
     // setting imageID
     public void setImageID(int ID){
         this.imageID = ID;
+    }
+
+    // getting ID
+    public int getID(){
+        return this.ID;
+    }
+
+    // setting ID
+    public void setID(int ID){
+        this.ID = ID;
     }
 
 }

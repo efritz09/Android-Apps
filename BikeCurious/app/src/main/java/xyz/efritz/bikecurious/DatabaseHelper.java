@@ -17,7 +17,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase _db) {
         _db.execSQL(HistoryDatabaseAdapter.DATABASE_CREATE);
-
     }
 
     @Override

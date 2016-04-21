@@ -394,31 +394,6 @@ public class ControlScreenActivity extends Activity {
                     }
                 };
                 adapter.startLeScan(scanCallback);
-//                adapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
-//                    @Override
-//                    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-//                        Log.i(TAG,"SEARCHING..." + device.getAddress());
-//
-//                        if (device.getAddress().equals(filterAddr)) {
-//                            //make available to whole module
-////                            Toast.makeText(getApplicationContext(),"Searching",Toast.LENGTH_SHORT).show();
-//                            Log.i(TAG,"Found the right one");
-//                            final TextView connect = (TextView) findViewById(R.id.state_of_connection);
-//                            Handler refresh = new Handler(Looper.getMainLooper());
-//                            refresh.post(new Runnable() {
-//                                 @Override
-//                                 public void run() {
-//                                     connect.setText(getString(R.string.connecting));
-//                                     connect.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(ControlScreenActivity.this, R.color.gold)));
-//                                 }
-//                             });
-//                            gatt = device.connectGatt(ControlScreenActivity.this, autoConnectBoolean, gattCallback);
-//                        }
-//                    }
-//                });
-
-
-//
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
