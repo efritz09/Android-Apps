@@ -29,10 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Firebase.setAndroidContext(this);
         ref = new Firebase("https://shining-heat-649.firebaseio.com/");
         users.put("efritz09@gmail.com", "testicles"); //debugging override
-
     }
 
     /*
