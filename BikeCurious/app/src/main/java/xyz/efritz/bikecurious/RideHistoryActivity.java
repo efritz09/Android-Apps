@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,11 +15,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class RideHistoryActivity extends Activity {
@@ -31,17 +40,49 @@ public class RideHistoryActivity extends Activity {
     Random random = new Random();
     BikeHistoryAdapter arrayAdapter;
     HistoryDatabaseAdapter historyAdapter;
+    Firebase ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_history);
+        ref = new Firebase(getString(R.string.website));
+
         //open the database and populate the list if the history exists
         historyAdapter = new HistoryDatabaseAdapter(this);
         historyAdapter = historyAdapter.open();
-        if(historyAdapter.isEmpty()) ride_history = new ArrayList<>();
-        else ride_history = historyAdapter.getAllEntries();
+//        if(historyAdapter.isEmpty()) ride_history = new ArrayList<>();
+//        else {
+//            ride_history = historyAdapter.getAllEntries();
+//            Map<String, ArrayList<Ride>> map = new HashMap<>();
+//            String userId = ref.getAuth().getUid();
+//            map.put(userId,ride_history);
+//            Log.i(TAG, "pushing rides");
+//            ref.child("rides").push().setValue(map);
+//        }
+
+        if(historyAdapter.isEmpty()) {
+            final String userId = ref.getAuth().getUid();
+            ref.child("rides").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG, "fuck me sideways");
+//                    GenericTypeIndicator<Map<String, ArrayList<Ride>>> t = new GenericTypeIndicator<Map<String, ArrayList<Ride>>>() {};
+                    Map<String, ArrayList<Ride>> map = (HashMap<String, ArrayList<Ride>>)dataSnapshot.getValue();
+                    if(map.isEmpty()) Log.i(TAG,"Map is empty");
+                    else Log.i(TAG,"map size = " + Integer.toString(map.size()));
+                    ride_history = map.get(userId);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.i(TAG, "cancelled");
+                }
+            });
+            //read from firebase
+
+        }else ride_history = historyAdapter.getAllEntries();
 
         //setup the listview with the ride_history
         ListView listView = (ListView) findViewById(R.id.listView_history);

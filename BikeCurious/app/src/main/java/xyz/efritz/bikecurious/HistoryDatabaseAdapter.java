@@ -96,17 +96,12 @@ public class HistoryDatabaseAdapter {
 
     public boolean isEmpty() {
         Cursor mCursor = db.rawQuery("SELECT * FROM " + "HISTORY", null);
-//        Boolean rowExists;
-
         if (mCursor.moveToFirst()) {
             Log.i(TAG,"not empty");
             return false;
-//            rowExists = true;
-
         }else {
             Log.i(TAG,"empty");
             return true;
-//            rowExists = false;
         }
     }
 

@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ref = new Firebase("https://shining-heat-649.firebaseio.com/");
+        ref = new Firebase(getString(R.string.website));
         users.put("efritz09@gmail.com", "testicles"); //debugging override
     }
 
@@ -38,8 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     checks the username and password. Launches controlScreenActivity if successful
      */
     public void login_press(View view) {
-        EditText e_username = (EditText)findViewById(R.id.username_text);
-        EditText e_password = (EditText)findViewById(R.id.password_text);
+        final EditText e_username = (EditText)findViewById(R.id.username_text);
+        final EditText e_password = (EditText)findViewById(R.id.password_text);
 //        Context context = getApplicationContext();
 //        String test = users.get(e_username.getText().toString());
 //        String pass = e_password.getText().toString();
@@ -48,10 +48,11 @@ public class LoginActivity extends AppCompatActivity {
                 new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Log.i(TAG,"authenticated");
+                        Log.i(TAG, "authenticated");
                         Map<String, String> map = new HashMap<String, String>();
                         map.put("provider", authData.getProvider());
-                        map.put("more","more");
+                        map.put("username",e_username.getText().toString());
+                        map.put("password",e_password.getText().toString());
                         ref.child("users").child(authData.getUid()).setValue(map);
                         Intent Successful_login = new Intent(LoginActivity.this, xyz.efritz.bikecurious.ControlScreenActivity.class);
                         startActivity(Successful_login);
@@ -142,11 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                     password.setText(getString(R.string.empty));
                     confirmp.setText(getString(R.string.empty));
                 }
-
-                //FIREBASE
-
-
-                //this throws an error somehow
 
             }
         });
