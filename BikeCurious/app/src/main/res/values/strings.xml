@@ -49,6 +49,7 @@
     <string name="ble_not_supported">BLE NOT SUPPORTED</string>
     <string name="error_bluetooth_not_supported">bluetooth not supported</string>
     <string name="button_bluetooth_lock">Lock</string>
+    <string name="register_dialog_title">Enter your email address and password</string>
 
 
 </resources>
