@@ -54,6 +54,11 @@ public class HistoryDatabaseAdapter {
         db.insert("HISTORY", null, newValues);
     }
 
+    public boolean deleteTable() {
+        db.execSQL("delete from HISTORY");
+        return true;
+    }
+
     public int deleteEntry(String date) {
 
         String where = "DATE=?";
@@ -82,13 +87,14 @@ public class HistoryDatabaseAdapter {
         Cursor cursor = db.rawQuery("SELECT * FROM " + "HISTORY", null);
         cursor.moveToFirst();
         ArrayList<Ride> rides = new ArrayList<>();
-        while (cursor.moveToNext()) {
+        while (true) {
             // Extract data.
             Ride ride = new Ride();
             ride.location = cursor.getString(cursor.getColumnIndex("LOCATION"));
             ride.date = cursor.getString(cursor.getColumnIndex("DATE"));
             ride.imageID = cursor.getInt(cursor.getColumnIndex("IMAGEID"));
             rides.add(0,ride);
+            if(!cursor.moveToNext()) break;
         }
         cursor.close();
         return rides;

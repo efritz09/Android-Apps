@@ -22,6 +22,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.UUID;
 
 public class ControlScreenActivity extends Activity {
@@ -41,10 +43,18 @@ public class ControlScreenActivity extends Activity {
     public static UUID CLIENT_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
     BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+
+    HistoryDatabaseAdapter historyAdapter;
+    Firebase ref;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
         disableBluetoothControl();
+        ref = new Firebase(getString(R.string.website));
+        historyAdapter = new HistoryDatabaseAdapter(this);
+        historyAdapter = historyAdapter.open();
 
         //set up the onclicklisteners for the switches
         Switch mode, state;
@@ -284,7 +294,9 @@ public class ControlScreenActivity extends Activity {
      */
     public void click_logout(View view) {
         Intent login = new Intent(this, xyz.efritz.bikecurious.LoginActivity.class);
+        ref.unauth();
         startActivity(login);
+        historyAdapter.deleteTable();
         finish();
     }
     /*
