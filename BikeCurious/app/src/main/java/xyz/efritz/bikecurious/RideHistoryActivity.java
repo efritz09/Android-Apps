@@ -22,13 +22,11 @@ import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
 
@@ -36,7 +34,6 @@ public class RideHistoryActivity extends Activity {
     static final String TAG = "RideHistoryActivity";
     ArrayList<Ride> ride_history;
     static Map<String, ArrayList<Ride>> user_rides;
-//    static Map<String, Object> firebase_rides;
     int[] smash = {R.mipmap.dk, R.mipmap.falcon, R.mipmap.fox, R.mipmap.jiggly, R.mipmap.kirby,
             R.mipmap.link, R.mipmap.luigi, R.mipmap.mario, R.mipmap.ness, R.mipmap.pikachu,
             R.mipmap.samus, R.mipmap.yoshi};
@@ -86,7 +83,6 @@ public class RideHistoryActivity extends Activity {
                             arrayAdapter.notifyDataSetChanged();
                         }
                     }
-
                 }
 
                 @Override

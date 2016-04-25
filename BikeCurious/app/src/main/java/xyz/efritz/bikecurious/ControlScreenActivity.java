@@ -47,7 +47,6 @@ public class ControlScreenActivity extends Activity {
     HistoryDatabaseAdapter historyAdapter;
     Firebase ref;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_screen);
@@ -290,13 +289,16 @@ public class ControlScreenActivity extends Activity {
 
     /*
     click_logout
-    closes the activity and launches the login activity
+    closes the activity, cleans up, and launches the login activity
      */
     public void click_logout(View view) {
         Intent login = new Intent(this, xyz.efritz.bikecurious.LoginActivity.class);
         ref.unauth();
-        startActivity(login);
         historyAdapter.deleteTable();
+
+        LoginActivity.LogOut();
+
+        startActivity(login);
         finish();
     }
     /*

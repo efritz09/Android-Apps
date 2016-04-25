@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
     String TAG = "LoginActivity";
     static HashMap<String,String> users = new HashMap<String,String>();
+    private static SharedPreferences loginSettings;
+    private static SharedPreferences.Editor preferencesEditor;
     Firebase ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ref = new Firebase(getString(R.string.website));
         users.put("efritz09@gmail.com", "testicles"); //debugging override
+//
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+//        SharedPreferences.Editor editor = pref.edit();
+
+
+        loginSettings = getPreferences(0); //get private preferences
+
+        if(loginSettings.getBoolean("logged in",false)) {
+            Log.i(TAG,"Logged in");
+            Intent Successful_login = new Intent(LoginActivity.this, xyz.efritz.bikecurious.ControlScreenActivity.class);
+            startActivity(Successful_login);
+            finish();
+        } else Log.i(TAG,"not logged");
     }
 
     /*
@@ -44,23 +60,31 @@ public class LoginActivity extends AppCompatActivity {
 //        String test = users.get(e_username.getText().toString());
 //        String pass = e_password.getText().toString();
 
-        ref.authWithPassword(e_username.getText().toString(),e_password.getText().toString(),
+        ref.authWithPassword(e_username.getText().toString(), e_password.getText().toString(),
                 new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         Log.i(TAG, "authenticated");
                         Map<String, String> map = new HashMap<String, String>();
                         map.put("provider", authData.getProvider());
-                        map.put("username",e_username.getText().toString());
-                        map.put("password",e_password.getText().toString());
+                        map.put("username", e_username.getText().toString());
+                        map.put("password", e_password.getText().toString());
                         ref.child("users").child(authData.getUid()).setValue(map);
+
+                        //Store the logged in status:
+
+                        preferencesEditor = loginSettings.edit();
+                        preferencesEditor.putBoolean("logged in", true);
+                        preferencesEditor.apply();
+
                         Intent Successful_login = new Intent(LoginActivity.this, xyz.efritz.bikecurious.ControlScreenActivity.class);
                         startActivity(Successful_login);
                         finish();
                     }
+
                     @Override
                     public void onAuthenticationError(FirebaseError error) {
-                        Log.i(TAG,"authentication error");
+                        Log.i(TAG, "authentication error");
                         Toast.makeText(LoginActivity.this, getString(R.string.toast_failedlogin), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -147,6 +171,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public static void LogOut() {
+//        loginSettings = getPreferences(0); //get private preferences
+        preferencesEditor = loginSettings.edit();
+        preferencesEditor.putBoolean("logged in", false);
+        preferencesEditor.commit();
+    }
+
 }
 
 
