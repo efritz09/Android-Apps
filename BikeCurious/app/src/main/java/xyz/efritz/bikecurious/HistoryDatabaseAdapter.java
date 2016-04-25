@@ -111,7 +111,6 @@ public class HistoryDatabaseAdapter {
         }
     }
 
-
     public void updateEntry(String location, String date, int imageID) {
         ContentValues updatedValues = new ContentValues();
         updatedValues.put("LOCATION", location);

@@ -295,9 +295,7 @@ public class ControlScreenActivity extends Activity {
         Intent login = new Intent(this, xyz.efritz.bikecurious.LoginActivity.class);
         ref.unauth();
         historyAdapter.deleteTable();
-
         LoginActivity.LogOut();
-
         startActivity(login);
         finish();
     }
