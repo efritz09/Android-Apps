@@ -156,6 +156,11 @@
         android:onClick="click_logout"
         android:text="@string/logout" />
 
+    <TextView
+        android:id="@+id/moving_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content" />-->
