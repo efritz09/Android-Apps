@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,9 +39,10 @@ public class ControlScreenActivity extends Activity {
     BluetoothGatt gatt;
     BluetoothGattCharacteristic tx;
     BluetoothGattCharacteristic rx;
-    public static UUID TX_UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
     public static UUID UART_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
-    public static UUID CLIENT_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
+    public static UUID TX_UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
+    public static UUID RX_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
+    public static UUID DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB");
 
     BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -142,37 +144,58 @@ public class ControlScreenActivity extends Activity {
                 //save reference to each UART characteristic, module level
                 //uart_uuid can be equal to tx_uuid
                 tx = gatt.getService(UART_UUID).getCharacteristic(TX_UUID);
-                Log.i(TAG,"discovered...");
-                //send a "connected" data pack
-                //This sends multiple times but I don't know how to fix it
+                rx = gatt.getService(UART_UUID).getCharacteristic(RX_UUID);
+
+                if(!gatt.setCharacteristicNotification(rx,true)) {
+                    Log.i(TAG,"setCharacteristicNotification error");
+                    return;
+                }
+                BluetoothGattDescriptor desc = rx.getDescriptor(DESCRIPTOR_UUID);
+                if(desc == null) {
+                    Log.i(TAG,"getDescriptor failure");
+                    return;
+                }
+                desc.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                if(!gatt.writeDescriptor(desc)) {
+                    Log.i(TAG,"write descriptor failure");
+                    return;
+                }
+                Log.i(TAG,"Successful bluetooth connection");
                 String data = "C";
                 Log.i(TAG,data);
                 tx.setValue(data);
                 writingFlag = true;
                 gatt.writeCharacteristic(tx);
                 locked = false;
-                //-----------enable notifications
-//                if(!gatt.setCharacteristicNotification(tx, true)) {
-//                    Log.i(TAG, "Doing something, fuck if I know");
-//                    return;
-//                }
-//                BluetoothGattDescriptor desc = tx.getDescriptor(CLIENT_UUID);
-//                if(desc == null) {
-//                    //print something
-//                    return;
-//                }
-//                tx.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-//                if(!gatt.writeDescriptor(desc)) {
-//                    //success
-//                    return;
-//                }
-                //---------------------------//
+
             }
             @Override
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                 //receiving
                 super.onCharacteristicChanged(gatt, characteristic);
-                Log.i(TAG,characteristic.getStringValue(0));
+                String c = characteristic.getStringValue(0);
+                if(c.equals("M")) {
+                    Log.i(TAG,"Moving");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView moving = (TextView) findViewById(R.id.moving_status);
+                            moving.setText(R.string.moving_status_moving);
+                            moving.setTextColor(ContextCompat.getColor(ControlScreenActivity.this, R.color.green));
+                        }
+                    });
+                }else if(c.equals("N")) {
+                    Log.i(TAG,"Not Moving");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView moving = (TextView) findViewById(R.id.moving_status);
+                            moving.setText(R.string.moving_status_stationary);
+                            moving.setTextColor(ContextCompat.getColor(ControlScreenActivity.this, R.color.grey));
+                        }
+                    });
+                }else Log.i(TAG,"some error: " + c);
+
                 //do something with the data
             }
             @Override
@@ -319,7 +342,6 @@ public class ControlScreenActivity extends Activity {
         stateTitle = (TextView)findViewById(R.id.state_title);
         modeText = (TextView)findViewById(R.id.mode_text);
         stateText = (TextView)findViewById(R.id.state_text);
-        //No idea what this does, but it was needed to make it work
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -358,7 +380,6 @@ public class ControlScreenActivity extends Activity {
         stateTitle = (TextView)findViewById(R.id.state_title);
         modeText = (TextView)findViewById(R.id.mode_text);
         stateText = (TextView)findViewById(R.id.state_text);
-        //No idea what this does, but it was needed to make it work
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

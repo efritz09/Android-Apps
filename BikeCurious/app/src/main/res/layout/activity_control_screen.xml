@@ -52,7 +52,7 @@
         android:thumbTint="@color/green"
         android:trackTint="@color/darkgreen"
         android:clickable="false"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="74dp"
         android:layout_below="@id/unique_identifier"
         android:layout_toEndOf="@+id/mode_title"
         android:layout_toRightOf="@+id/mode_title"
@@ -159,7 +159,13 @@
     <TextView
         android:id="@+id/moving_status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/moving_status_stationary"
+        android:textColor="@color/grey"
+        android:layout_below="@+id/lock_status_label"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true" />
 
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->

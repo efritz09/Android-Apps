@@ -51,6 +51,8 @@
     <string name="button_bluetooth_lock">Lock</string>
     <string name="register_dialog_title">Enter your email address and password</string>
     <string name="website">https://shining-heat-649.firebaseio.com/</string>
+    <string name="moving_status_moving">Moving</string>
+    <string name="moving_status_stationary">Stationary</string>
 
 
 </resources>
